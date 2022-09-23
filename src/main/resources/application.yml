@@ -1,3 +1,4 @@
 active-mq:
     broker-url: tcp://localhost:61616
-    topic: demo.topic
+    topic: demo321
+    queue: demoqueue
