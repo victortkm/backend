@@ -2,10 +2,10 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.activemq.QueueProducer;
-
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -20,10 +20,8 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-
-
-
 @SpringBootApplication
+@EnableAutoConfiguration
 public class DemoApplication {
 
     @Autowired

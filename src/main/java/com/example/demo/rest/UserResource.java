@@ -1,14 +1,12 @@
 package com.example.demo.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.activemq.QueueProducer;
 import com.example.demo.service.UserService;
 import com.example.demo.util.*;
 import com.example.demo.vo.UserVO;
@@ -21,17 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserResource {
 
     @Autowired
-    QueueProducer queueProducer;
-    
-    @Autowired
     UserService demoService;
-
-	@GetMapping("/")
-	public String index() {
-		queueProducer.sendMessage("423432");
-		return "Greetings from Spring Boot!";
-	}
-	
+    
 	@RequestMapping(value = "/getUserDetails", method = RequestMethod.GET)
 	public BoUtil getUserDetails(@RequestParam(value="userId", required=false) Long id) {
 		BoUtil boUtil = new BoUtil();
