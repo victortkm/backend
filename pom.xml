@@ -57,6 +57,37 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-activemq</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.birt.runtime/org.eclipse.birt.runtime -->
+		<dependency>
+			<groupId>org.eclipse.birt.runtime</groupId>
+			<artifactId>viewservlets</artifactId>
+			<version>4.5.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.birt.runtime</groupId>
+					<artifactId>org.eclipse.orbit.mongodb</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+					<artifactId>org.apache.xerces</artifactId>
+				</exclusion>
+				<!-- Exclude existing common apache libraries -->
+				<exclusion>
+					<groupId>org.eclipse.birt.runtime</groupId>
+					<artifactId>org.apache.commons.logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+					<artifactId>org.apache.commons.codec</artifactId>
+				</exclusion>
+				<!-- Exclude the default org.apache.batik.pdf module. Use a custom one 
+					instead -->
+				<exclusion>
+					<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+					<artifactId>org.apache.batik.pdf</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<build>

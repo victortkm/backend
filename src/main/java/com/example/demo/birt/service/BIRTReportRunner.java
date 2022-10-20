@@ -1,0 +1,285 @@
+package com.example.demo.birt.service;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.eclipse.birt.core.exception.BirtException;
+import org.eclipse.birt.core.framework.Platform;
+import org.eclipse.birt.report.engine.api.EXCELRenderOption;
+import org.eclipse.birt.report.engine.api.EngineConfig;
+import org.eclipse.birt.report.engine.api.EngineException;
+import org.eclipse.birt.report.engine.api.IPDFRenderOption;
+import org.eclipse.birt.report.engine.api.IRenderOption;
+import org.eclipse.birt.report.engine.api.IRenderTask;
+import org.eclipse.birt.report.engine.api.IReportDocument;
+import org.eclipse.birt.report.engine.api.IReportEngine;
+import org.eclipse.birt.report.engine.api.IReportEngineFactory;
+import org.eclipse.birt.report.engine.api.IReportRunnable;
+import org.eclipse.birt.report.engine.api.IRunTask;
+import org.eclipse.birt.report.engine.api.PDFRenderOption;
+import org.eclipse.birt.report.model.api.OdaDataSourceHandle;
+import org.eclipse.birt.report.model.api.ReportDesignHandle;
+import org.eclipse.birt.report.model.api.activity.SemanticException;
+import org.eclipse.birt.report.model.api.util.StringUtil;
+import org.eclipse.core.internal.registry.RegistryProviderFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.DemoApplication;
+import com.example.demo.birt.model.Report;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@Qualifier("birt")
+public class BIRTReportRunner implements ReportRunner {
+
+	@Autowired
+	private DemoApplication.FilePathConfig config;
+	
+	@Autowired
+	private DemoApplication.BirtDatasourceConfig configBirt;
+	
+//	private static final String DEFAULT_LOGGING_DIRECTORY = "defaultBirtLoggingDirectory/";
+//	private Logger logger = LoggerFactory.getLogger(BIRTReportRunner.class);
+
+	private static String reportOutputDirectory;
+
+	private IReportEngine birtReportEngine = null;
+
+	private Level LOG_LEVEL = Level.ALL;
+
+	/**
+	 * Starts up and configures the BIRT Report Engine
+	 */
+	@PostConstruct
+	public void startUp() {
+
+		try {
+			String birtLoggingDirectory = config.getLogPath();
+			Level birtLoggingLevel = LOG_LEVEL;
+
+			EngineConfig engineConfig = new EngineConfig();
+			log.info("BIRT LOG DIRECTORY SET TO : {}", birtLoggingDirectory);
+			log.info("BIRT LOGGING LEVEL SET TO {}", birtLoggingLevel);
+			engineConfig.setLogConfig(birtLoggingDirectory, birtLoggingLevel);
+
+			// Required due to a bug in BIRT that occurs in calling Startup after the
+			// Platform has already been started up
+			RegistryProviderFactory.releaseDefault();
+			Platform.startup(engineConfig);
+			IReportEngineFactory reportEngineFactory = (IReportEngineFactory) Platform
+					.createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
+			birtReportEngine = reportEngineFactory.createReportEngine(engineConfig);
+		} catch (BirtException e) {
+			// TODO add logging aspect and find out how to log a platform startup problem
+			// from this catch block, if possible, using the aspect.
+			// Possibly rethrow the exception here and catch it in the aspect.
+			log.error("Birt Startup Error: {}", e.getMessage());
+		}
+		reportOutputDirectory = config.getLogPath();
+	}
+
+	/**
+	 * Shuts down the BIRT Report Engine
+	 */
+	@PreDestroy
+	public void shutdown() {
+		birtReportEngine.destroy();
+		RegistryProviderFactory.releaseDefault();
+		Platform.shutdown();
+	}
+
+	public File getReportFromFilesystem(String reportName) throws RuntimeException { 
+		String reportDirectory="";
+		reportDirectory= config.getInputPath();
+		
+		Path birtReport = Paths.get(reportDirectory + File.separator + reportName + ".rptdesign");
+		log.info("Report Path: {}",birtReport.toString());
+		if (!Files.isReadable(birtReport))
+			throw new RuntimeException("Report " + reportName + " either did not exist or was not writable.");
+
+		return birtReport.toFile();
+	}
+
+	/**
+	 * This method creates and executes the report task, the main responsibility of
+	 * the entire Report Service. This method is key to enabling pagination for the
+	 * BIRT report. The IRunTask run task is created and then used to generate an
+	 * ".rptdocument" binary file. This binary file is then read by the separately
+	 * created IRenderTask render task. The render task renders the binary document
+	 * as a binary PDF output stream which is then returned from the method.
+	 * <p>
+	 *
+	 * @param birtReport
+	 *            the report object created at the controller to hold the data of
+	 *            the report request.
+	 * @return Returns a ByteArrayOutputStream of the PDF bytes generated by the
+	 */
+	@Override
+	public ByteArrayOutputStream runReport(Report birtReport) {
+		ByteArrayOutputStream byteArrayOutputStream;
+		File rptDesignFile;
+
+		// get the path to the report design file
+		try {
+			rptDesignFile = getReportFromFilesystem(birtReport.getName());
+		} catch (Exception e) {
+			log.error("Error while loading rptdesign: {}.", e.getMessage());
+			throw new RuntimeException("Could not find report");
+		}
+		if (StringUtil.isEmpty(birtReport.getExportType())) {
+			log.error("Error export Type is empty: {}", birtReport.getExportType());
+			throw new RuntimeException("Error export type is empty");
+		}
+
+		// process any additional parameters
+		Map<String, String> parsedParameters = new HashMap<String, String>(); 
+		
+		byteArrayOutputStream = new ByteArrayOutputStream();
+		IRenderTask renderTask = null;
+		IReportDocument reportDocument = null;
+		String rptdocument = null;
+		IRunTask runTask = null;
+		log.info("PARAMS: "+birtReport.getParameters());
+		
+		try {
+//			parsedParameters = parseParametersAsMap(birtReport.getParameters());
+			
+			if(birtReportEngine == null) {
+				log.info("birtReportEngine is null @@@@@@");
+			}else
+				log.info("birtReportEngine not null @@@@@");
+			
+			if(rptDesignFile.exists()) {
+				log.info("rptDesignFile is exist");
+			}else 
+				log.info("rptDesignFile not exist");
+
+
+			IReportRunnable reportDesign = birtReportEngine.openReportDesign(rptDesignFile.getPath());
+			
+
+			 runTask = birtReportEngine.createRunTask(reportDesign);
+			if (parsedParameters.size() > 0) {
+				for (Map.Entry<String, String> entry : parsedParameters.entrySet()) {
+					runTask.setParameterValue(entry.getKey(), entry.getValue());
+				}
+			}
+			runTask.validateParameters();
+			rptdocument = reportOutputDirectory  + File.separator + birtReport.getName()
+			+ "_" + (new Date()).getTime() + ".rptdocument";
+			// Set Datasource
+			buildDataSource(reportDesign);
+			
+			
+			runTask.run(rptdocument);
+
+			reportDocument = birtReportEngine.openReportDocument(rptdocument);
+			renderTask = birtReportEngine.createRenderTask(reportDocument);
+
+			IRenderOption options = null;
+			if (birtReport.getExportType().equalsIgnoreCase("pdf")) {
+				PDFRenderOption pdfRenderOption = new PDFRenderOption();
+				pdfRenderOption.setOption(IPDFRenderOption.REPAGINATE_FOR_PDF, new Boolean(true));
+				pdfRenderOption.setOutputFormat("pdf");
+				pdfRenderOption.setOutputStream(byteArrayOutputStream);
+				options = pdfRenderOption;
+			} else {
+				EXCELRenderOption excelRenderOptions = new EXCELRenderOption();
+				excelRenderOptions.setOutputFormat("xlsx");
+				excelRenderOptions.setOutputStream(byteArrayOutputStream);
+				excelRenderOptions.setEnableMultipleSheet(true);
+				options = excelRenderOptions;
+			}
+
+			renderTask.setRenderOption(options);
+
+			renderTask.render();
+		} catch (EngineException e) {
+			log.error("Error while running report task: {}.", e.getMessage());
+			// TODO add custom message to thrown exception
+			e.printStackTrace();
+			throw new RuntimeException();
+		} catch (SemanticException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}catch (Exception e){
+			e.printStackTrace();
+			
+		}finally {
+			if (renderTask != null) {
+				renderTask.close();
+			}
+			if (reportDocument != null) {
+				reportDocument.close();
+			}
+
+			try {
+				File fd = new File(rptdocument);
+				log.info("fd name: "+ fd);
+				if (fd.exists()) {
+					fd.delete();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return byteArrayOutputStream;
+	}
+	
+	private void buildDataSource(IReportRunnable runnable) throws SemanticException {
+		ReportDesignHandle design = (ReportDesignHandle) runnable.getDesignHandle().getModuleHandle();
+		OdaDataSourceHandle dsh = (OdaDataSourceHandle) design.findDataSource("Report");
+		log.info("db", configBirt.getUrl(), configBirt.getUsername(), configBirt.getPassword());
+		dsh.setProperty("odaURL", configBirt.getUrl());
+		dsh.setProperty("odaUser", configBirt.getUsername());
+		dsh.setProperty("odaPassword", configBirt.getPassword());
+//		dsh.setProperty("odaDriverClass", "com.mysql.jdbc.Driver");
+	}
+
+	/**
+	 * Takes a String of parameters started by '?', delimited by '&', and with keys
+	 * and values split by '=' and returnes a Map of the keys and values in the
+	 * String.
+	 *
+	 * @param reportParameters
+	 *            a String from a HTTP request URL
+	 * @return a map of parameters with Key,Value entries as strings
+	 */
+	public Map<String, String> parseParametersAsMap(String reportParameters) {
+		Map<String, String> parsedParameters = new HashMap<String, String>();
+		String[] paramArray;
+		if (reportParameters.isEmpty()) {
+			throw new IllegalArgumentException("Report parameters cannot be empty");
+		} else if (!reportParameters.startsWith("?") && !reportParameters.contains("?")) {
+			throw new IllegalArgumentException("Report parameters must start with a question mark '?'!");
+		} else {
+			String noQuestionMark = reportParameters.substring(1, reportParameters.length());
+			paramArray = noQuestionMark.split("&");
+			for (String param : paramArray) {
+				String[] paramGroup = param.split("=");
+				if (paramGroup.length == 2) {
+					parsedParameters.put(paramGroup[0], paramGroup[1]);
+				} else {
+					parsedParameters.put(paramGroup[0], "");
+				}
+			}
+		}
+		return parsedParameters;
+	}
+}
