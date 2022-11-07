@@ -249,7 +249,7 @@ public class BIRTReportRunner implements ReportRunner {
 		dsh.setProperty("odaURL", configBirt.getUrl());
 		dsh.setProperty("odaUser", configBirt.getUsername());
 		dsh.setProperty("odaPassword", configBirt.getPassword());
-//		dsh.setProperty("odaDriverClass", "com.mysql.jdbc.Driver");
+		dsh.setProperty("odaDriverClass", "com.mysql.jdbc.Driver");
 	}
 
 	/**
