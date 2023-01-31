@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class FunctionServiceImpl implements FunctionService {
 		
 		try {
 			
-			List<FunctionDTO> list = functionDAO.getFunctionList(groupId);
+			List<HashMap<String, Object>> list = functionDAO.getFunctionList(groupId);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(list);
@@ -63,8 +64,11 @@ public class FunctionServiceImpl implements FunctionService {
 		try {
 			FunctionDTO dto = FunctionDTO.buildFromVo(vo);
 //			functionDAO.insertFunctionDtls(dto);
-//			functionDAO.insertFunction(dto);
+			functionDAO.insertFunction(dto);
 			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
 		} catch (Exception e) {
 			log.error(e.toString());
 			e.printStackTrace();

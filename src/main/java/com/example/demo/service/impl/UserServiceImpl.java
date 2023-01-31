@@ -66,6 +66,10 @@ public class UserServiceImpl implements UserService {
 			demoDAO.insertUserDtls(dto);
 			demoDAO.insertUser(dto);
 			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
 		} catch (Exception e) {
 			log.error(e.toString());
 			e.printStackTrace();

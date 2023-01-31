@@ -29,9 +29,10 @@ public class GroupProvider {
 	public String getGroupList() {
 		String s = new SQL() {
 			{
-				SELECT("demo_group_id, group_name, is_active");
-				FROM("demo_group_dtls");
-				WHERE("is_active = 1");
+				SELECT("demo_group_id, group_name");
+				FROM("demo_group g");
+				LEFT_OUTER_JOIN("demo_group_dtls d ON g.demo_group_dtls_id = d.demo_group_dtls_id");
+				WHERE("g.is_active = 1 AND d.is_active = 1");
 			}
 		}.toString();
 		log.info(s);
@@ -43,7 +44,6 @@ public class GroupProvider {
 			{
 				INSERT_INTO("demo_group_dtls");
 				VALUES("group_name", "#{groupName}");
-				VALUES("demo_group_id", "#{groupId}");
 			}
 		}.toString();
 	}
@@ -52,7 +52,7 @@ public class GroupProvider {
 		return new SQL() {
 			{
 				INSERT_INTO("demo_group");
-				VALUES("demo_use_dtls_id", "#{groupDtlsId}");
+				VALUES("demo_group_dtls_id", "#{groupDtlsId}");
 			}
 		}.toString();
 	}

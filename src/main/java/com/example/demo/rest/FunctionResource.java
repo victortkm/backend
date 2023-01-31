@@ -41,7 +41,7 @@ public class FunctionResource {
 		return boUtil;
 	}
 
-	@RequestMapping(value = "/insertFunction", method = RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	@RequestMapping(value = "/addFunction", method = RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
 	public BoUtil addGroup(@RequestBody FunctionVO vo) {
 		BoUtil boUtil = new BoUtil();
 		boUtil = demoService.insertFunction(vo);

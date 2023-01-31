@@ -44,6 +44,8 @@ public class UserProvider {
 			{
 				INSERT_INTO("demo_user_dtls");
 				VALUES("user_name", "#{userName}");
+				VALUES("first_name", "#{firstName}");
+				VALUES("last_name", "#{lastName}");
 				VALUES("demo_group_id", "#{groupId}");
 			}
 		}.toString();

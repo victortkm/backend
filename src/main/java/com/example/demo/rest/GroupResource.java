@@ -41,7 +41,7 @@ public class GroupResource {
 		return boUtil;
 	}
 
-	@RequestMapping(value = "/insertGroup", method = RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	@RequestMapping(value = "/addGroup", method = RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
 	public BoUtil addGroup(@RequestBody GroupVO groupVO) {
 		BoUtil boUtil = new BoUtil();
 		boUtil = demoService.insertGroup(groupVO);

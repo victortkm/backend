@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class GroupDAO {
 		return demoMapper.getGroupDetails(id);
 	}
 	
-	public List<GroupDTO> getGroupList() {
+	public List<HashMap<String, Object>> getGroupList() {
 		return demoMapper.getGroupList();
 	}
 	

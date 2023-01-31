@@ -10,6 +10,10 @@ public class UserVO {
 	
 	public String userName;
 	
+	public String firstName;
+	
+	public String lastName;
+	
 	public Long groupId;
 
 }

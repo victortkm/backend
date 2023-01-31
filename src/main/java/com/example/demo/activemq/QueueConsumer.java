@@ -65,14 +65,14 @@ public class QueueConsumer {
 
     }
     
-	@JmsListener(destination = "${active-mq.name.inward-queue}", containerFactory = "inwardDemoQueueJMSFactory" )
-    public void receiveMessage(final Message message) throws JMSException{
-        log.info("Received msg: " + message);
-        String messageData = null;
-        if(message instanceof TextMessage) {
-            TextMessage textMessage = (TextMessage)message;
-            messageData = textMessage.getText();
-        }
-    }
+//	@JmsListener(destination = "${active-mq.name.inward-queue}", containerFactory = "inwardDemoQueueJMSFactory" )
+//    public void receiveMessage(final Message message) throws JMSException{
+//        log.info("Received msg: " + message);
+//        String messageData = null;
+//        if(message instanceof TextMessage) {
+//            TextMessage textMessage = (TextMessage)message;
+//            messageData = textMessage.getText();
+//        }
+//    }
     
 }

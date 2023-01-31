@@ -18,10 +18,9 @@ public class FunctionProvider {
 	public String getFunctionDetailsFromFunctionId(Long id) {
 		return new SQL() {
 			{
-				SELECT("u.demo_function_id, d.function_name, d.is_active");
-				FROM("demo_function u");
-				LEFT_OUTER_JOIN("demo_function_dtls d ON u.demo_function_dtls_id = d.demo_function_dtls_id");
-				WHERE("demo_function_id = #{id} AND u.is_active = 1 AND d.is_active = 1");
+				SELECT("demo_function_id, function_name, is_active");
+				FROM("demo_function");
+				WHERE("demo_function_id = #{id} AND is_active = 1");
 			}
 		}.toString();
 	}
@@ -29,8 +28,8 @@ public class FunctionProvider {
 	public String getFunctionList() {
 		String s = new SQL() {
 			{
-				SELECT("demo_function_id, function_name, is_active");
-				FROM("demo_function_dtls");
+				SELECT("demo_function_id, function_name");
+				FROM("demo_function");
 				WHERE("is_active = 1");
 			}
 		}.toString();
@@ -38,21 +37,22 @@ public class FunctionProvider {
 		return s;
 	}
 
-	public String insertFunctionDtls(FunctionDTO dto) {
-		return new SQL() {
-			{
-				INSERT_INTO("demo_function_dtls");
-				VALUES("function_name", "#{functionName}");
-				VALUES("demo_function_id", "#{functionId}");
-			}
-		}.toString();
-	}
+//	public String insertFunctionDtls(FunctionDTO dto) {
+//		return new SQL() {
+//			{
+//				INSERT_INTO("demo_function_dtls");
+//				VALUES("function_name", "#{functionName}");
+//				VALUES("demo_function_id", "#{functionId}");
+//			}
+//		}.toString();
+//	}
 
 	public String insertFunction(FunctionDTO dto) {
 		return new SQL() {
 			{
 				INSERT_INTO("demo_function");
-				VALUES("demo_use_dtls_id", "#{functionDtlsId}");
+				VALUES("function_name", "#{functionName}");
+//				VALUES("demo_use_dtls_id", "#{functionDtlsId}");
 			}
 		}.toString();
 	}

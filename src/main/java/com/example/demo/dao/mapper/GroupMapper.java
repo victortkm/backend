@@ -1,5 +1,6 @@
 package com.example.demo.dao.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.InsertProvider;
@@ -26,12 +27,12 @@ public interface GroupMapper {
 	GroupDTO getGroupDetails(Long id);
 
 	@Results(value = {
-			@Result(property = "groupId", column = "group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "groupName", column = "group_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "isActive", column = "is_active", javaType = Long.class, jdbcType = JdbcType.BIGINT)
 			})
 	@SelectProvider(type = GroupProvider.class, method = "getGroupList")
-	List<GroupDTO> getGroupList();
+	List<HashMap<String, Object>> getGroupList();
 
 	@InsertProvider(type = GroupProvider.class, method = "insertGroupDtls")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupDtlsId" }, keyProperty = "groupDtlsId", before = false, resultType = Long.class)

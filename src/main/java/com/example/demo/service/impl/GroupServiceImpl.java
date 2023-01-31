@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class GroupServiceImpl implements GroupService {
 		
 		try {
 			
-			List<GroupDTO> list = groupDAO.getGroupList();
+			List<HashMap<String, Object>> list = groupDAO.getGroupList();
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(list);
@@ -65,6 +66,9 @@ public class GroupServiceImpl implements GroupService {
 			groupDAO.insertGroupDtls(dto);
 			groupDAO.insertGroup(dto);
 			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
 		} catch (Exception e) {
 			log.error(e.toString());
 			e.printStackTrace();

@@ -19,12 +19,16 @@ public class UserDTO {
 	
 	public String userName;
 	
+	public String firstName;
+	
+	public String lastName;
+	
 	public Long groupId;
 	
 	public Long isActive;
 	
 	public static UserDTO buildFromVo(UserVO vo) {
-		UserDTO dto = UserDTO.builder().userName(vo.getUserName()).groupId(vo.getGroupId()).build();
+		UserDTO dto = UserDTO.builder().userName(vo.getUserName()).firstName(vo.getFirstName()).lastName(vo.getLastName()).groupId(vo.getGroupId()).build();
 		return dto;
 	}
 }

@@ -1,5 +1,6 @@
 package com.example.demo.dao.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.InsertProvider;
@@ -26,16 +27,16 @@ public interface FunctionMapper {
 	FunctionDTO getFunctionDetails(Long id);
 
 	@Results(value = {
-			@Result(property = "functionId", column = "function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "functionName", column = "function_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "isActive", column = "is_active", javaType = Long.class, jdbcType = JdbcType.BIGINT)
 			})
 	@SelectProvider(type = FunctionProvider.class, method = "getFunctionList")
-	List<FunctionDTO> getFunctionList(Long groupId);
+	List<HashMap<String, Object>> getFunctionList(Long groupId);
 
-	@InsertProvider(type = FunctionProvider.class, method = "insertFunctionDtls")
-	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS functionDtlsId" }, keyProperty = "functionDtlsId", before = false, resultType = Long.class)
-	int insertFunctionDtls(FunctionDTO dto);
+//	@InsertProvider(type = FunctionProvider.class, method = "insertFunctionDtls")
+//	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS functionDtlsId" }, keyProperty = "functionDtlsId", before = false, resultType = Long.class)
+//	int insertFunctionDtls(FunctionDTO dto);
 
 	@InsertProvider(type = FunctionProvider.class, method = "insertFunction")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS functionId" }, keyProperty = "functionId", before = false, resultType = Long.class)

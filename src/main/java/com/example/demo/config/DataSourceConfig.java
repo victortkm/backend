@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 public class DataSourceConfig {
 	@Bean(name = "dataSource")
-	@ConfigurationProperties(prefix = "spring.datasource-write")
+	@ConfigurationProperties(prefix = "spring.datasource")
 	public DataSource bizDataSource() {
 		return DataSourceBuilder.create().build();
 	}
