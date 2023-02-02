@@ -8,16 +8,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FunctionVO {
+public class GroupFunctionVO {
 	
 	public Long groupId;
-
-	public Long functionId;
 	
 	public List<Long> functionIds;
 	
-	public String functionName;
+	public Long functionId;
 	
 	public String status;
-
 }
