@@ -18,6 +18,4 @@ public interface FunctionService {
 	public BoUtil insertCategoryFunction(FunctionCategoryVO vo);
 	
 	public BoUtil deleteFunctionCategory(FunctionCategoryVO vo);
-	
-	public BoUtil insertGroupFunction(GroupFunctionVO vo);
 }

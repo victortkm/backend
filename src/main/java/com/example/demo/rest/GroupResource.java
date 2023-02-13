@@ -24,7 +24,7 @@ public class GroupResource {
     GroupService demoService;
 	
 	@RequestMapping(value = "/getGroupDetails", method = RequestMethod.GET)
-	public BoUtil getGroupDetails(@RequestParam(value="userId", required=false) Long id) {
+	public BoUtil getGroupDetails(@RequestParam(value="groupId", required=false) Long id) {
 		BoUtil boUtil = new BoUtil();
 		log.info("----- getGroupDetails user id:"+ id);
 		
@@ -37,6 +37,7 @@ public class GroupResource {
 	public BoUtil getGroupList() {
 		BoUtil boUtil = new BoUtil();
 		boUtil = demoService.getGroupList();
+		log.info("----- getGroupList");
 		
 		return boUtil;
 	}
@@ -46,7 +47,17 @@ public class GroupResource {
 		BoUtil boUtil = new BoUtil();
 		boUtil = demoService.insertGroup(groupVO);
 		
-		log.info("----- getGroupDetails groupVO:"+ groupVO);
+		log.info("----- addGroup groupVO:"+ groupVO);
+		
+		return boUtil;
+	}
+
+	@RequestMapping(value = "/updateGroup", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil changeStatus(@RequestBody GroupVO groupVO) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.updateGroup(groupVO);
+		
+		log.info("----- updateGroup groupVO:"+ groupVO);
 		
 		return boUtil;
 	}

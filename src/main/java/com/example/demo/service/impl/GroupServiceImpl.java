@@ -76,5 +76,43 @@ public class GroupServiceImpl implements GroupService {
 		return boUtil;
 	}
 
+	@Override
+	public BoUtil updateGroup(GroupVO groupVO) {
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+			GroupDTO dto = GroupDTO.buildFromVo(groupVO);
+			groupDAO.updateGroupDtls(dto);
+			
+			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
+	@Override
+	public BoUtil changeStatus(GroupVO groupVO) {
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+			GroupDTO dto = GroupDTO.buildFromVo(groupVO);
+			groupDAO.insertGroupDtls(dto);
+			groupDAO.insertGroup(dto);
+			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
 	
 }

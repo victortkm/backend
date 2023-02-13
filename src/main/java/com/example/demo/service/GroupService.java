@@ -10,4 +10,8 @@ public interface GroupService {
 	public BoUtil getGroupList();
 	
 	public BoUtil insertGroup(GroupVO groupVO);
+	
+	public BoUtil updateGroup(GroupVO groupVO);
+	
+	public BoUtil changeStatus(GroupVO groupVO);
 }

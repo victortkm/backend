@@ -24,7 +24,7 @@ public interface FunctionMapper {
 	@Results(value = {
 			@Result(property = "functionId", column = "function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "functionName", column = "function_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "isActive", column = "is_active", javaType = Long.class, jdbcType = JdbcType.BIGINT)
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = FunctionProvider.class, method = "getFunctionDetailsFromFunctionId")
 	FunctionDTO getFunctionDetails(Long id);
@@ -32,7 +32,7 @@ public interface FunctionMapper {
 	@Results(value = {
 			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "functionName", column = "function_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "isActive", column = "is_active", javaType = Long.class, jdbcType = JdbcType.BIGINT)
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = FunctionProvider.class, method = "getFunctionList")
 	List<HashMap<String, Object>> getFunctionList(Long groupId);
@@ -58,14 +58,5 @@ public interface FunctionMapper {
 
 	@UpdateProvider(type = FunctionProvider.class, method = "updateFunctionCategory")
 	int updateFunctionCategory(FunctionCategoryDTO dto);
-
-	@InsertProvider(type = FunctionProvider.class, method = "insertGroupFunction")
-	int insertGroupFunction(GroupFunctionDTO dto);
-	
-	@SelectProvider(type = FunctionProvider.class, method = "getGroupFunctionListByGroupId")
-	List<Long> getGroupFunctionListByGroupId(Long id);
-
-	@UpdateProvider(type = FunctionProvider.class, method = "updateGroupFunction")
-	int updateGroupFunction(GroupFunctionDTO dto);
 	
 }

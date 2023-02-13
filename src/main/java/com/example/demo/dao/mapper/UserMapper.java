@@ -23,16 +23,21 @@ public interface UserMapper {
 	int healthCheck();
 	
 	@Results(value = {
-			@Result(property = "userId", column = "user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "userId", column = "demo_user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "userDtlsId", column = "demo_user_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "isActive", column = "is_active", javaType = Long.class, jdbcType = JdbcType.BIGINT)
+			@Result(property = "firstName", column = "first_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "lastName", column = "last_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT)
 			})
 	@SelectProvider(type = UserProvider.class, method = "getUserDetailsFromUserId")
 	UserDTO getUserDetails(Long id);
 
 	@Results(value = {
 			@Result(property = "userId", column = "demo_user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-			@Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR)
+			@Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = UserProvider.class, method = "getUserList")
 	List<HashMap<String, Object>> getUserList();

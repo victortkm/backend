@@ -45,15 +45,4 @@ public class FunctionDAO {
 		return demoMapper.insertFunctionCategory(dto);
 	}
 	
-	public int insertGroupFunction(GroupFunctionDTO dto) {
-		return demoMapper.insertGroupFunction(dto);
-	}
-	public List<Long> getGroupFunctionListByGroupId(Long id) {
-		return demoMapper.getGroupFunctionListByGroupId(id);
-	}
-	
-	public int updateGroupFunction(GroupFunctionDTO dto) {
-		return demoMapper.updateGroupFunction(dto);
-	}
-	
 }

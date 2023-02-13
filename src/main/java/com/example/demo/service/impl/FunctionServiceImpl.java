@@ -135,43 +135,5 @@ public class FunctionServiceImpl implements FunctionService {
 		}
 		return boUtil;
 	}
-
-	@Override
-	public BoUtil insertGroupFunction(GroupFunctionVO vo) {
-		BoUtil boUtil = new BoUtil();
-		
-		try {
-			GroupFunctionDTO dto = GroupFunctionDTO.buildFromVo(vo);
-			
-			List<Long> list = functionDAO.getGroupFunctionListByGroupId(vo.getGroupId());
-			
-			//	update old group functions to inactive
-			for(Long l: list) {
-				GroupFunctionDTO temp = new GroupFunctionDTO();
-				temp.setGroupFunctionId(l);
-				temp.setStatus("N");
-				
-				functionDAO.updateGroupFunction(temp);
-			}
-			
-			//	insert new group functions to db
-			for(Long funcId: dto.getFunctionIds()) {
-				dto.setFunctionId(funcId);
-				dto.setStatus("A");
-				functionDAO.insertGroupFunction(dto);
-				dto.setFunctionId(0l);
-			}
-			
-			log.info(dto.toString());
-			
-			boUtil = BoUtil.getDefaultTrueBo();
-			boUtil.setData(dto);
-		} catch (Exception e) {
-			log.error(e.toString());
-			e.printStackTrace();
-		}
-		return boUtil;
-	}
-
 	
 }

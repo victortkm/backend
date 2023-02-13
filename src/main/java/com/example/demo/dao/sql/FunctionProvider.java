@@ -22,9 +22,10 @@ public class FunctionProvider {
 	public String getFunctionDetailsFromFunctionId(Long id) {
 		return new SQL() {
 			{
-				SELECT("demo_function_id, function_name, is_active");
-				FROM("demo_function");
-				WHERE("demo_function_id = #{id} AND is_active = 1");
+				SELECT("f.demo_function_id, d.function_name, d.active_flag");
+				FROM("demo_function f");
+				LEFT_OUTER_JOIN("demo_user_dtls d ON f.demo_user_dtls_id = d.demo_user_dtls_id");
+				WHERE("f.demo_function_id = #{id} AND d.active_flag = 'y'");
 			}
 		}.toString();
 	}
@@ -32,9 +33,10 @@ public class FunctionProvider {
 	public String getFunctionList() {
 		String s = new SQL() {
 			{
-				SELECT("demo_function_id, function_name");
-				FROM("demo_function");
-				WHERE("is_active = 1");
+				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name");
+				FROM("demo_function f");
+				LEFT_OUTER_JOIN("demo_user_dtls d ON f.demo_user_dtls_id = d.demo_user_dtls_id");
+				WHERE("f.active_flag = 'y'");
 			}
 		}.toString();
 		log.info(s);
@@ -54,19 +56,8 @@ public class FunctionProvider {
 	public String insertFunction(FunctionDTO dto) {
 		return new SQL() {
 			{
-				INSERT_INTO("demo_function");
+				INSERT_INTO("demo_function_dtls");
 				VALUES("function_name", "#{functionName}");
-			}
-		}.toString();
-	}
-	
-	public String insertGroupFunction(GroupFunctionDTO dto) {
-		return new SQL() {
-			{
-				INSERT_INTO("demo_group_function");
-				VALUES("demo_function_id", "#{functionId}");
-				VALUES("demo_group_id", "#{groupId}");
-				VALUES("status", "#{status}");
 			}
 		}.toString();
 	}
@@ -109,40 +100,5 @@ public class FunctionProvider {
 				VALUES("status", "#{status}");
 			}
 		}.toString();
-	}
-	
-	public String getGroupFunctionListByGroupId(Long id) {
-		String s = new SQL() {
-			{
-				SELECT("demo_group_function_id");
-				FROM("demo_group_function");
-				WHERE("demo_group_id = #{id} AND status = 'A'");
-			}
-		}.toString();
-		log.info(s);
-		return s;
-	}
-
-	public String updateGroupFunction(GroupFunctionDTO dto) {
-		String s = new SQL() {
-			{
-				UPDATE("demo_group_function");
-				
-				if(dto.getGroupId() != null) {
-					SET("demo_group_id = #{groupId}");
-				}
-				if(dto.getFunctionId() != null) {
-					SET("demo_function_id = #{functionId}");
-				}
-				if(dto.getStatus() != null) {
-					SET("status = #{status}");
-				}
-				SET("updated_by = '1'");
-				SET("updated_time = NOW()");
-				WHERE("demo_group_function_id = #{groupFunctionId}");
-			}
-		}.toString();
-		log.info(s);
-		return s;
 	}
 }

@@ -25,7 +25,7 @@ public class UserDTO {
 	
 	public Long groupId;
 	
-	public Long isActive;
+	public String status;
 	
 	public static UserDTO buildFromVo(UserVO vo) {
 		UserDTO dto = UserDTO.builder().userName(vo.getUserName()).firstName(vo.getFirstName()).lastName(vo.getLastName()).groupId(vo.getGroupId()).build();

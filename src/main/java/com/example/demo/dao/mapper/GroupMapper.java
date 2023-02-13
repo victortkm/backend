@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
 import com.example.demo.dao.sql.GroupProvider;
@@ -19,17 +20,19 @@ import com.example.demo.dto.GroupDTO;
 public interface GroupMapper {
 	
 	@Results(value = {
-			@Result(property = "groupId", column = "group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "groupDtlsId", column = "demo_group_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "groupName", column = "group_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "isActive", column = "is_active", javaType = Long.class, jdbcType = JdbcType.BIGINT)
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = GroupProvider.class, method = "getGroupDetailsFromGroupId")
 	GroupDTO getGroupDetails(Long id);
 
 	@Results(value = {
 			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "groupDtlsId", column = "demo_group_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "groupName", column = "group_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "isActive", column = "is_active", javaType = Long.class, jdbcType = JdbcType.BIGINT)
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = GroupProvider.class, method = "getGroupList")
 	List<HashMap<String, Object>> getGroupList();
@@ -41,5 +44,12 @@ public interface GroupMapper {
 	@InsertProvider(type = GroupProvider.class, method = "insertGroup")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupId" }, keyProperty = "groupId", before = false, resultType = Long.class)
 	int insertGroup(GroupDTO dto);
+
+	@InsertProvider(type = GroupProvider.class, method = "updateGroupDtls")
+	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupId" }, keyProperty = "groupId", before = false, resultType = Long.class)
+	int updateGroupDtls(GroupDTO dto);
+	
+	@UpdateProvider(type = GroupProvider.class, method = "changeStatus")
+	int changeStatus(GroupDTO dto);
 	
 }

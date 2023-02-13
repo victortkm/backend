@@ -70,15 +70,5 @@ public class FunctionResource {
 		
 		return boUtil;
 	}
-
-	@RequestMapping(value = "/addGroupFunction", method = RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
-	public BoUtil addGroupFunction(@RequestBody GroupFunctionVO vo) {
-		BoUtil boUtil = new BoUtil();
-		boUtil = demoService.insertGroupFunction(vo);
-		
-		log.info("----- addGroupFunction vo:"+ vo);
-		
-		return boUtil;
-	}
 	
 }

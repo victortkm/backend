@@ -30,4 +30,12 @@ public class GroupDAO {
 	public int insertGroup(GroupDTO dto) {
 		return demoMapper.insertGroup(dto);
 	}
+	
+	public int updateGroupDtls(GroupDTO dto) {
+		return demoMapper.updateGroupDtls(dto);
+	}
+	
+	public int changeStatus(GroupDTO dto) {
+		return demoMapper.changeStatus(dto);
+	}
 }

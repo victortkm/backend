@@ -19,7 +19,7 @@ public class GroupDTO {
 	
 	public String groupName;
 	
-	public Long isActive;
+	public String status;
 	
 	public static GroupDTO buildFromVo(GroupVO vo) {
 		GroupDTO dto = GroupDTO.builder().groupName(vo.getGroupName()).groupId(vo.getGroupId()).build();
