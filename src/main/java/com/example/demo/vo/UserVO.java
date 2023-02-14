@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserVO {
 	
+	public Long userId;
+	
 	public String userName;
 	
 	public String firstName;

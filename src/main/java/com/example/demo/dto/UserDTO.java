@@ -27,8 +27,18 @@ public class UserDTO {
 	
 	public String status;
 	
+	public String pendAppStatus;
+	
+	public String pendAppDtlId;
+	
 	public static UserDTO buildFromVo(UserVO vo) {
-		UserDTO dto = UserDTO.builder().userName(vo.getUserName()).firstName(vo.getFirstName()).lastName(vo.getLastName()).groupId(vo.getGroupId()).build();
+		UserDTO dto = UserDTO.builder()
+				.userId(vo.getUserId())
+				.userName(vo.getUserName())
+				.firstName(vo.getFirstName())
+				.lastName(vo.getLastName())
+				.groupId(vo.getGroupId())
+				.build();
 		return dto;
 	}
 }

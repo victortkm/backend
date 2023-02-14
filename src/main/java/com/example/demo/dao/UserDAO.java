@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.mapper.UserMapper;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.WorkflowDTO;
 
 @Repository
 public class UserDAO {
@@ -29,5 +30,17 @@ public class UserDAO {
 	
 	public int insertUser(UserDTO dto) {
 		return demoMapper.insertUser(dto);
+	}
+	
+	public int updateUser(UserDTO dto) {
+		return demoMapper.updateUser(dto);
+	}
+	
+	public Long getMstIdFromPendAppDtlId(Long id) {
+		return demoMapper.getMstIdFromPendAppDtlId(id);
+	}
+	
+	public int changeStatus(WorkflowDTO dto) {
+		return demoMapper.changeStatus(dto);
 	}
 }

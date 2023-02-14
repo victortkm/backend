@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.service.UserService;
 import com.example.demo.util.*;
+import com.example.demo.vo.GroupVO;
 import com.example.demo.vo.UserVO;
+import com.example.demo.vo.WorkflowVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,6 +47,26 @@ public class UserResource {
 		boUtil = demoService.insertUser(userVo);
 		
 		log.info("----- getUserDetails userVo:"+ userVo);
+		
+		return boUtil;
+	}
+
+	@RequestMapping(value = "/updateUser", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil updateUser(@RequestBody UserVO userVo) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.updateUser(userVo);
+		
+		log.info("----- updateGroup userVo:"+ userVo);
+		
+		return boUtil;
+	}
+
+	@RequestMapping(value = "/changeStatus", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil changeStatus(@RequestBody WorkflowVO vo) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.changeStatus(vo);
+		
+		log.info("----- changeStatus userVo:"+ vo);
 		
 		return boUtil;
 	}

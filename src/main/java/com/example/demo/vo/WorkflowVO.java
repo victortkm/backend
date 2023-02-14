@@ -18,4 +18,5 @@ public class WorkflowVO {
 	private String changeMode;
 	private String keyValue;
 	private String recordStatus;
+	private String actionCode;
 }

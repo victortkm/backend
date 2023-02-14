@@ -20,6 +20,8 @@ public class WorkflowDTO {
 	private String changeMode;
 	private String keyValue;
 	private String recordStatus;
+	private String actionCode;
+	private Long mstId;
 	
 	public static WorkflowDTO buildFromVo(WorkflowVO vo) {
 		WorkflowDTO dto = WorkflowDTO.builder()
@@ -31,6 +33,7 @@ public class WorkflowDTO {
 				.changeMode(vo.getChangeMode())
 				.keyValue(vo.getKeyValue())
 				.recordStatus(vo.getRecordStatus())
+				.actionCode(vo.getActionCode())
 				.build();
 		return dto;
 	}

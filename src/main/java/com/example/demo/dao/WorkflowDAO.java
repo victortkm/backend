@@ -15,8 +15,12 @@ public class WorkflowDAO {
 	@Autowired
 	WorkflowMapper demoMapper;
 	
-	public HashMap<String,Object> getApprovalListing() {
+	public List<HashMap<String, Object>> getApprovalListing() {
 		return demoMapper.getApprovalListing();
+	}
+	
+	public Long getDocIdFromJobId(Long id) {
+		return demoMapper.getDocIdFromJobId(id);
 	}
 	
 	public int insert(WorkflowDTO dto) {
@@ -25,5 +29,9 @@ public class WorkflowDAO {
 	
 	public void update(WorkflowDTO reqDTO) {
 		demoMapper.update(reqDTO);
+	}
+	
+	public int insertJobMvmt(WorkflowDTO dto) {
+		return demoMapper.insertJobMvmt(dto);
 	}
 }

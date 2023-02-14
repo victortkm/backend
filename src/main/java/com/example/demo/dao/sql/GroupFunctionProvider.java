@@ -61,16 +61,16 @@ public class GroupFunctionProvider {
 //		}.toString();
 //	}
 //	
-//	public String insertGroupFunction(GroupFunctionDTO dto) {
-//		return new SQL() {
-//			{
-//				INSERT_INTO("demo_group_function_dtls");
-//				VALUES("demo_function_id", "#{functionId}");
-//				VALUES("demo_group_id", "#{groupId}");
-//				VALUES("status", "#{status}");
-//			}
-//		}.toString();
-//	}
+	public String insertGroupFunction(GroupFunctionDTO dto) {
+		return new SQL() {
+			{
+				INSERT_INTO("demo_group_function_dtls");
+				VALUES("demo_function_id", "#{functionId}");
+				VALUES("demo_group_id", "#{groupId}");
+				VALUES("status", "#{status}");
+			}
+		}.toString();
+	}
 //	
 //	public String getFunctionCategoryList() {
 //		return new SQL() {

@@ -10,5 +10,7 @@ public interface WorkflowService {
 	public BoUtil init(WorkflowVO vo);
 	
 	public BoUtil update(WorkflowVO vo);
+	
+	public BoUtil insertJobMvmt(WorkflowVO vo);
 
 }

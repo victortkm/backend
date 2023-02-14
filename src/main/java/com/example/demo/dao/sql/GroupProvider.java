@@ -70,8 +70,8 @@ public class GroupProvider {
 					SET("record_status = #{recordStatus}");
 				}
 
-				SET("update_time = NOW()");
-				SET("update_by = #{userId}");
+				SET("updated_time = NOW()");
+				SET("updated_by = #{userId}");
 				WHERE(" job_id = #{jobId} ");
 			}
 		}.toString();
@@ -85,8 +85,8 @@ public class GroupProvider {
 				SET("demo_group_dtls_id = {groupDtlsId}");
 				SET("pending_approval_status = null");
 				SET("demo_group_dtpending_approval_dtls_idls_id = null");
-				SET("update_time = NOW()");
-				SET("update_by = #{userId}");
+				SET("updated_time = NOW()");
+				SET("updated_by = #{userId}");
 				WHERE(" demo_group_id = #{groupId} ");
 			}
 		}.toString();

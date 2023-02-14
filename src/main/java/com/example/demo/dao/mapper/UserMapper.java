@@ -10,10 +10,12 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
 import com.example.demo.dao.sql.UserProvider;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.WorkflowDTO;
 
 @Mapper
 public interface UserMapper {
@@ -27,6 +29,8 @@ public interface UserMapper {
 			@Result(property = "userDtlsId", column = "demo_user_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "firstName", column = "first_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "pendAppStatus", column = "pending_approval_status", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "pendAppDtlId", column = "pending_approval_dtls_id", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "lastName", column = "last_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT)
@@ -49,5 +53,14 @@ public interface UserMapper {
 	@InsertProvider(type = UserProvider.class, method = "insertUser")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS userId" }, keyProperty = "userId", before = false, resultType = Long.class)
 	int insertUser(UserDTO dto);
+
+	@UpdateProvider(type = UserProvider.class, method = "updateUser")
+	int updateUser(UserDTO dto);
+
+	@SelectProvider(type = UserProvider.class, method = "getMstIdFromPendAppDtlId")
+	Long getMstIdFromPendAppDtlId(Long id);
 	
+	@UpdateProvider(type = UserProvider.class, method = "changeStatus")
+	int changeStatus(WorkflowDTO dto);
+
 }

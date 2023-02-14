@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constant.CommonConst;
 import com.example.demo.dao.WorkflowDAO;
 import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.WorkflowService;
@@ -26,7 +27,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		try {
 			BoUtil boUtil = BoUtil.getDefaultFalseBo();
 
-			HashMap<String, Object> list = demoDAO.getApprovalListing();
+			List<HashMap<String, Object>> list = demoDAO.getApprovalListing();
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(list);
@@ -51,7 +52,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 //			dto.setKeyValue(keyValue);
 //			dto.setUserId(userId);
 			WorkflowDTO dto = WorkflowDTO.buildFromVo(vo);
-			dto.setChangeMode("New");
 			log.info("Sending to workflow: "+ dto.toString());
 
 			demoDAO.insert(dto);
@@ -75,9 +75,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 			BoUtil boUtil = BoUtil.getDefaultFalseBo();
 			
 			WorkflowDTO dto = WorkflowDTO.buildFromVo(vo);
-			log.info("Sending to workflow: "+ dto.toString());
+			dto.setRecordStatus(CommonConst.WORKFLOW_ACTIVE_FLAG_NO);
+			log.info("Workflow Update: "+ dto.toString());
 
 			demoDAO.update(dto);
+			
+			insertJobMvmt(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(dto);
@@ -89,6 +92,29 @@ public class WorkflowServiceImpl implements WorkflowService {
 			log.error("",e);
 		}
 		return null;
+	}
+	
+	@Override
+	public BoUtil insertJobMvmt(WorkflowVO vo) {
+		try {
+			
+			BoUtil boUtil = BoUtil.getDefaultFalseBo();
+			
+			WorkflowDTO dto = WorkflowDTO.buildFromVo(vo);
+			log.info("Adding to movement table: "+ dto.toString());
+
+			demoDAO.insertJobMvmt(dto);
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
+			return boUtil;
+
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return null;
+
 	}
 	
 }

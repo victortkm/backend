@@ -27,8 +27,11 @@ public interface WorkflowMapper {
 			@Result(property = "changeMode", column = "change_mode", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "keyValue", column = "key_value", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "updatedDate", column = "update_time", javaType = String.class, jdbcType = JdbcType.TIMESTAMP),
-			@Result(property = "createdBy", column = "update_by", javaType = Long.class, jdbcType = JdbcType.BIGINT)})
-	HashMap<String, Object> getApprovalListing();
+			@Result(property = "createdBy", column = "updated_by", javaType = Long.class, jdbcType = JdbcType.BIGINT)})
+	List<HashMap<String, Object>> getApprovalListing();
+	
+	@SelectProvider(type = WorkflowProvider.class, method = "getDocIdFromJobId")
+	Long getDocIdFromJobId(Long id);
 
 	@InsertProvider(type = WorkflowProvider.class, method = "insert")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS userId" }, keyProperty = "userId", before = false, resultType = Long.class)
@@ -36,5 +39,7 @@ public interface WorkflowMapper {
 	
 	@UpdateProvider(type = WorkflowProvider.class, method = "update")
 	void update(WorkflowDTO reqDTO);
-	
+
+	@InsertProvider(type = WorkflowProvider.class, method = "insertJobMvmt")
+	int insertJobMvmt(WorkflowDTO dto);
 }
