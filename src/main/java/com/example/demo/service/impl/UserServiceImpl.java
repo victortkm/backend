@@ -163,7 +163,11 @@ public class UserServiceImpl implements UserService {
 					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
 				}
 			} else {
-				dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
+					dto.setRecordStatus(CommonConst.STATUS_INACTIVE);
+				} else {
+					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				}
 			}
 			
 			userDAO.changeStatus(dto);
