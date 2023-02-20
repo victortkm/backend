@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.constant.CommonConst;
 import com.example.demo.dao.UserDAO;
 import com.example.demo.dao.WorkflowDAO;
+import com.example.demo.dto.ListResDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.UserService;
@@ -51,15 +52,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public BoUtil getUserList() {
+	public BoUtil getUserList(UserDTO dto) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {
 			
-			List<HashMap<String, Object>> list = userDAO.getUserList();
+			List<HashMap<String, Object>> list = userDAO.getUserList(dto);
+			
+			ListResDTO res = new ListResDTO();
+			res.setList(list);
+			res.setPageNumber(dto.getPageNumber());
+			
+			dto.setTotalCount(true);
+			Integer totalCount = userDAO.getUserListTotalCount(dto);
+			res.setTotalCount(totalCount);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
-			boUtil.setData(list);
+			boUtil.setData(res);
 			
 		} catch (Exception e) {
 			log.error(e.toString());

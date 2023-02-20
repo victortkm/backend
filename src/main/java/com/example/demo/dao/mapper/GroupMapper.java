@@ -35,7 +35,10 @@ public interface GroupMapper {
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = GroupProvider.class, method = "getGroupList")
-	List<HashMap<String, Object>> getGroupList();
+	List<HashMap<String, Object>> getGroupList(GroupDTO dto);
+	
+	@SelectProvider(type = GroupProvider.class, method = "getGroupList")
+	Integer getGroupListTotalCount(GroupDTO dto);
 
 	@InsertProvider(type = GroupProvider.class, method = "insertGroupDtls")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupDtlsId" }, keyProperty = "groupDtlsId", before = false, resultType = Long.class)

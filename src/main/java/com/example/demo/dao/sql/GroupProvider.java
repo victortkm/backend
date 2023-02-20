@@ -1,5 +1,6 @@
 package com.example.demo.dao.sql;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 import com.example.demo.dto.GroupDTO;
 import com.example.demo.dto.WorkflowDTO;
@@ -28,13 +29,33 @@ public class GroupProvider {
 		}.toString();
 	}
 	
-	public String getGroupList() {
+	public String getGroupList(GroupDTO dto) {
 		String s = new SQL() {
 			{
-				SELECT("g.demo_group_id, g.demo_group_dtls_id, d.group_name");
+				if(dto.isTotalCount()) {
+					SELECT("COUNT(*)");
+				} else {
+					SELECT("g.demo_group_id, g.demo_group_dtls_id, d.group_name");
+				}
 				FROM("demo_group g");
 				LEFT_OUTER_JOIN("demo_group_dtls d ON g.demo_group_dtls_id = d.demo_group_dtls_id");
 				WHERE("g.active_flag = 'y' AND d.active_flag = 'y'");
+				
+				if (StringUtils.isNotBlank(dto.getGroupName())) {
+					AND();
+					WHERE("d.group_name LIKE CONCAT('%', #{groupName}, '%') ");
+				}
+				
+				/* MUST PUT ON LAST */
+				if(!dto.isTotalCount()) {
+					if (dto.getPageSize() != null && dto.getPageSize() > 0) {
+						if(StringUtils.isNoneBlank(dto.getSortKey())) {
+							ORDER_BY( dto.getSortKey().replaceAll(":", " ") + " LIMIT #{offset},#{pageSize}");	
+						} else {
+							ORDER_BY(" g.updated_time DESC, g.created_time DESC LIMIT #{offset},#{pageSize}");
+						}
+					}
+				}
 			}
 		}.toString();
 		log.info(s);

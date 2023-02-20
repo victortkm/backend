@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.constant.CommonConst;
+import com.example.demo.dto.FunctionDTO;
 import com.example.demo.service.FunctionService;
 import com.example.demo.util.*;
 import com.example.demo.vo.FunctionCategoryVO;
@@ -26,9 +28,35 @@ public class FunctionResource {
     FunctionService demoService;
 	
 	@RequestMapping(value = "/getFunctionList", method = RequestMethod.GET)
-	public BoUtil getGroupList(@RequestParam(value="userId", required=false) Long groupId) {
+	public BoUtil getGroupList(
+//			@RequestParam(value="userId", required=false) Long groupId,
+			@RequestParam(required = false) String pageNumber, 
+			@RequestParam(required = false) String pageSize,
+			@RequestParam(required = false) String sortKey) {
+		
+		int nPage = 1;
+		int nPageSize = CommonConst.DEFAULT_PAGE_SIZE;
+		if (pageNumber != null && !pageNumber.isEmpty()) {
+			try {
+				nPage = Integer.parseInt(pageNumber);
+			} catch (Exception e) {
+			}
+		}
+		if (pageSize != null && !pageSize.isEmpty()) {
+			try {
+				nPageSize = Integer.parseInt(pageSize);
+			} catch (Exception e) {
+			}
+		}
+		int offset = (nPage - 1) * nPageSize;
+		FunctionDTO dto = new FunctionDTO();
+		dto.setPageNumber(nPage);
+		dto.setPageSize(nPageSize);
+		dto.setOffset(offset);
+		dto.setSortKey(sortKey);
+		
 		BoUtil boUtil = new BoUtil();
-		boUtil = demoService.getFunctionList(groupId);
+		boUtil = demoService.getFunctionList(dto);
 		
 		return boUtil;
 	}

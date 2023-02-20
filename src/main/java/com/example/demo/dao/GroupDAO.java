@@ -19,8 +19,12 @@ public class GroupDAO {
 		return demoMapper.getGroupDetails(id);
 	}
 	
-	public List<HashMap<String, Object>> getGroupList() {
-		return demoMapper.getGroupList();
+	public List<HashMap<String, Object>> getGroupList(GroupDTO dto) {
+		return demoMapper.getGroupList(dto);
+	}
+	
+	public Integer getGroupListTotalCount(GroupDTO dto) {
+		return demoMapper.getGroupListTotalCount(dto);
 	}
 	
 	public int insertGroupDtls(GroupDTO dto) {

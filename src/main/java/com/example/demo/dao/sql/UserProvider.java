@@ -1,5 +1,6 @@
 package com.example.demo.dao.sql;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
 import com.example.demo.dto.UserDTO;
@@ -22,21 +23,60 @@ public class UserProvider {
 	public String getUserDetailsFromUserId(Long id) {
 		return new SQL() {
 			{
-				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.last_name, u.pending_approval_status, u.pending_approval_dtls_id, d.demo_group_id, d.active_flag");
+				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.pending_approval_status, u.pending_approval_dtls_id, d.demo_group_id, d.active_flag");
 				FROM("demo_user u");
 				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
+				LEFT_OUTER_JOIN("demo_group g ON g.demo_group_id = d.demo_group_id");
+				LEFT_OUTER_JOIN("demo_group_dtls gd ON gd.demo_group_dtls_id = g.demo_group_dtls_id");
 				WHERE("u.demo_user_id = #{id}");
 			}
 		}.toString();
 	}
 	
-	public String getUserList() {
+	public String getUserList(UserDTO dto) {
 		String s = new SQL() {
 			{
-				SELECT("u.demo_user_id, d.user_name, u.active_flag");
+				if(dto.isTotalCount()) {
+					SELECT("COUNT(*)");
+				} else {
+					SELECT("u.demo_user_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.active_flag");
+				}
 				FROM("demo_user u");
 				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
+				LEFT_OUTER_JOIN("demo_group g ON g.demo_group_id = d.demo_group_id");
+				LEFT_OUTER_JOIN("demo_group_dtls gd ON gd.demo_group_dtls_id = g.demo_group_dtls_id");
 				WHERE("u.active_flag != '" + CommonConst.STATUS_INACTIVE + "'");
+				
+				if (StringUtils.isNotBlank(dto.getUserName())) {
+					AND();
+					WHERE("d.user_name LIKE CONCAT('%', #{userName}, '%') ");
+				}
+				
+				if (StringUtils.isNotBlank(dto.getFirstName())) {
+					AND();
+					WHERE("d.first_name LIKE CONCAT('%', #{firstName}, '%') ");
+				}
+				
+				if (StringUtils.isNotBlank(dto.getLastName())) {
+					AND();
+					WHERE("d.last_name LIKE CONCAT('%', #{lastName}, '%') ");
+				}	
+				
+				if (dto.getGroupId() != null) {
+					AND();
+					WHERE("d.demo_group_id = #{groupId}");
+				}
+				
+				/* MUST PUT ON LAST */
+				if(!dto.isTotalCount()) {
+					if (dto.getPageSize() != null && dto.getPageSize() > 0) {
+						if(StringUtils.isNoneBlank(dto.getSortKey())) {
+							ORDER_BY( dto.getSortKey().replaceAll(":", " ") + " LIMIT #{offset},#{pageSize}");	
+						} else {
+							ORDER_BY(" u.updated_time DESC, u.created_time DESC LIMIT #{offset},#{pageSize}");
+						}
+					}
+				}
 			}
 		}.toString();
 		log.info(s);

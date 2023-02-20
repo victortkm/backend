@@ -25,11 +25,23 @@ public class UserDTO {
 	
 	public Long groupId;
 	
+	public String groupName;
+	
 	public String status;
 	
 	public String pendAppStatus;
 	
 	public String pendAppDtlId;
+	
+	private Integer pageNumber;
+	
+	private Integer pageSize;
+	
+	private Integer offset;
+	
+	private String sortKey;
+	
+	private boolean isTotalCount;
 	
 	public static UserDTO buildFromVo(UserVO vo) {
 		UserDTO dto = UserDTO.builder()

@@ -10,6 +10,7 @@ import com.example.demo.dao.FunctionDAO;
 import com.example.demo.dto.FunctionCategoryDTO;
 import com.example.demo.dto.FunctionDTO;
 import com.example.demo.dto.GroupFunctionDTO;
+import com.example.demo.dto.ListResDTO;
 import com.example.demo.service.FunctionService;
 import com.example.demo.util.BoUtil;
 import com.example.demo.vo.FunctionCategoryVO;
@@ -44,15 +45,23 @@ public class FunctionServiceImpl implements FunctionService {
 	}
 
 	@Override
-	public BoUtil getFunctionList(Long groupId) {
+	public BoUtil getFunctionList(FunctionDTO dto) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {
 			
-			List<HashMap<String, Object>> list = functionDAO.getFunctionList(groupId);
+			List<HashMap<String, Object>> list = functionDAO.getFunctionList(dto);
+			
+			ListResDTO res = new ListResDTO();
+			res.setList(list);
+			res.setPageNumber(dto.getPageNumber());
+			
+			dto.setTotalCount(true);
+			Integer totalCount = functionDAO.getFunctionListTotalCount(dto);
+			res.setTotalCount(totalCount);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
-			boUtil.setData(list);
+			boUtil.setData(res);
 			
 		} catch (Exception e) {
 			log.error(e.toString());

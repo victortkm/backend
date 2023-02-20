@@ -35,7 +35,10 @@ public interface FunctionMapper {
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = FunctionProvider.class, method = "getFunctionList")
-	List<HashMap<String, Object>> getFunctionList(Long groupId);
+	List<HashMap<String, Object>> getFunctionList(FunctionDTO dto);
+	
+	@SelectProvider(type = FunctionProvider.class, method = "getFunctionList")
+	Integer getFunctionListTotalCount(FunctionDTO dto);
 
 //	@InsertProvider(type = FunctionProvider.class, method = "insertFunctionDtls")
 //	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS functionDtlsId" }, keyProperty = "functionDtlsId", before = false, resultType = Long.class)

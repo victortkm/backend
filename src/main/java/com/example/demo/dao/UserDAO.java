@@ -20,8 +20,12 @@ public class UserDAO {
 		return demoMapper.getUserDetails(id);
 	}
 	
-	public List<HashMap<String, Object>> getUserList() {
-		return demoMapper.getUserList();
+	public List<HashMap<String, Object>> getUserList(UserDTO dto) {
+		return demoMapper.getUserList(dto);
+	}
+	
+	public Integer getUserListTotalCount(UserDTO dto) {
+		return demoMapper.getUserListTotalCount(dto);
 	}
 	
 	public int insertUserDtls(UserDTO dto) {

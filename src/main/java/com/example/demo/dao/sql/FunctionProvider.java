@@ -1,5 +1,6 @@
 package com.example.demo.dao.sql;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
 import com.example.demo.dto.FunctionCategoryDTO;
@@ -30,13 +31,28 @@ public class FunctionProvider {
 		}.toString();
 	}
 	
-	public String getFunctionList() {
+	public String getFunctionList(FunctionDTO dto) {
 		String s = new SQL() {
 			{
-				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name");
+				if(dto.isTotalCount()) {
+					SELECT("COUNT(*)");
+				} else {
+					SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name");
+				}
 				FROM("demo_function f");
-				LEFT_OUTER_JOIN("demo_user_dtls d ON f.demo_user_dtls_id = d.demo_user_dtls_id");
+				LEFT_OUTER_JOIN("demo_function_dtls d ON f.demo_function_dtls_id = d.demo_function_dtls_id");
 				WHERE("f.active_flag = 'y'");
+
+				/* MUST PUT ON LAST */
+				if(!dto.isTotalCount()) {
+					if (dto.getPageSize() != null && dto.getPageSize() > 0) {
+						if(StringUtils.isNoneBlank(dto.getSortKey())) {
+							ORDER_BY( dto.getSortKey().replaceAll(":", " ") + " LIMIT #{offset},#{pageSize}");	
+						} else {
+							ORDER_BY(" f.updated_time DESC, f.created_time DESC LIMIT #{offset},#{pageSize}");
+						}
+					}
+				}
 			}
 		}.toString();
 		log.info(s);

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.activemq.QueueProducer;
+import com.example.demo.constant.CommonConst;
+import com.example.demo.dto.GroupDTO;
 import com.example.demo.service.GroupService;
 import com.example.demo.util.*;
 import com.example.demo.vo.GroupVO;
@@ -34,9 +36,37 @@ public class GroupResource {
 	}
 	
 	@RequestMapping(value = "/getGroupList", method = RequestMethod.GET)
-	public BoUtil getGroupList() {
+	public BoUtil getGroupList(
+			@RequestParam(required = false) String groupName,
+			@RequestParam(required = false) String pageNumber, 
+			@RequestParam(required = false) String pageSize,
+			@RequestParam(required = false) String sortKey) {
+		
+		int nPage = 1;
+		int nPageSize = CommonConst.DEFAULT_PAGE_SIZE;
+		if (pageNumber != null && !pageNumber.isEmpty()) {
+			try {
+				nPage = Integer.parseInt(pageNumber);
+			} catch (Exception e) {
+			}
+		}
+		if (pageSize != null && !pageSize.isEmpty()) {
+			try {
+				nPageSize = Integer.parseInt(pageSize);
+			} catch (Exception e) {
+			}
+		}
+		int offset = (nPage - 1) * nPageSize;
+		
+		GroupDTO dto = new GroupDTO();
+		dto.setGroupName(groupName);
+		dto.setPageNumber(nPage);
+		dto.setPageSize(nPageSize);
+		dto.setOffset(offset);
+		dto.setSortKey(sortKey);
+		
 		BoUtil boUtil = new BoUtil();
-		boUtil = demoService.getGroupList();
+		boUtil = demoService.getGroupList(dto);
 		log.info("----- getGroupList");
 		
 		return boUtil;

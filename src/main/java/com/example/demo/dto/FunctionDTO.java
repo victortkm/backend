@@ -24,6 +24,16 @@ public class FunctionDTO {
 	public String functionName;
 	
 	public String status;
+
+	private Integer pageNumber;
+	
+	private Integer pageSize;
+	
+	private Integer offset;
+	
+	private String sortKey;
+	
+	private boolean isTotalCount;
 	
 	public static FunctionDTO buildFromVo(FunctionVO vo) {
 		FunctionDTO dto = FunctionDTO.builder()

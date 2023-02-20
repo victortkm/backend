@@ -21,8 +21,12 @@ public class FunctionDAO {
 		return demoMapper.getFunctionDetails(id);
 	}
 	
-	public List<HashMap<String, Object>> getFunctionList(Long groupId) {
-		return demoMapper.getFunctionList(groupId);
+	public List<HashMap<String, Object>> getFunctionList(FunctionDTO dto) {
+		return demoMapper.getFunctionList(dto);
+	}
+	
+	public Integer getFunctionListTotalCount(FunctionDTO dto) {
+		return demoMapper.getFunctionListTotalCount(dto);
 	}
 	
 //	public int insertFunctionDtls(FunctionDTO dto) {

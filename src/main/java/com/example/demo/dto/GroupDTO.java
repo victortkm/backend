@@ -21,6 +21,16 @@ public class GroupDTO {
 	
 	public String status;
 	
+	private Integer pageNumber;
+	
+	private Integer pageSize;
+	
+	private Integer offset;
+	
+	private String sortKey;
+	
+	public boolean isTotalCount;
+	
 	public static GroupDTO buildFromVo(GroupVO vo) {
 		GroupDTO dto = GroupDTO.builder().groupName(vo.getGroupName()).groupId(vo.getGroupId()).build();
 		return dto;
