@@ -14,7 +14,9 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
 import com.example.demo.dao.sql.GroupProvider;
+import com.example.demo.dao.sql.UserProvider;
 import com.example.demo.dto.GroupDTO;
+import com.example.demo.dto.WorkflowDTO;
 
 @Mapper
 public interface GroupMapper {
@@ -51,8 +53,11 @@ public interface GroupMapper {
 	@InsertProvider(type = GroupProvider.class, method = "updateGroupDtls")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupId" }, keyProperty = "groupId", before = false, resultType = Long.class)
 	int updateGroupDtls(GroupDTO dto);
+
+	@SelectProvider(type = GroupProvider.class, method = "getMstIdFromPendAppDtlId")
+	Long getMstIdFromPendAppDtlId(Long id);
 	
 	@UpdateProvider(type = GroupProvider.class, method = "changeStatus")
-	int changeStatus(GroupDTO dto);
+	int changeStatus(WorkflowDTO dto);
 	
 }

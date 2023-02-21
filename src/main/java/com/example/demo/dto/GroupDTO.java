@@ -31,6 +31,10 @@ public class GroupDTO {
 	
 	public boolean isTotalCount;
 	
+	public String pendAppStatus;
+	
+	public String pendAppDtlId;
+	
 	public static GroupDTO buildFromVo(GroupVO vo) {
 		GroupDTO dto = GroupDTO.builder().groupName(vo.getGroupName()).groupId(vo.getGroupId()).build();
 		return dto;

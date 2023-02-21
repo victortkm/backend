@@ -1,19 +1,18 @@
 package com.example.demo.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.activemq.QueueProducer;
 import com.example.demo.constant.CommonConst;
 import com.example.demo.dto.GroupDTO;
 import com.example.demo.service.GroupService;
 import com.example.demo.util.*;
 import com.example.demo.vo.GroupVO;
+import com.example.demo.vo.WorkflowVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -88,6 +87,16 @@ public class GroupResource {
 		boUtil = demoService.updateGroup(groupVO);
 		
 		log.info("----- updateGroup groupVO:"+ groupVO);
+		
+		return boUtil;
+	}
+
+	@RequestMapping(value = "/changeStatus", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil changeStatus(@RequestBody WorkflowVO vo) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.changeStatus(vo);
+		
+		log.info("----- changeStatus userVo:"+ vo);
 		
 		return boUtil;
 	}

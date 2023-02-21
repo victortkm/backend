@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.mapper.GroupMapper;
 import com.example.demo.dto.GroupDTO;
+import com.example.demo.dto.WorkflowDTO;
 
 @Repository
 public class GroupDAO {
@@ -39,7 +40,11 @@ public class GroupDAO {
 		return demoMapper.updateGroupDtls(dto);
 	}
 	
-	public int changeStatus(GroupDTO dto) {
+	public Long getMstIdFromPendAppDtlId(Long id) {
+		return demoMapper.getMstIdFromPendAppDtlId(id);
+	}
+	
+	public int changeStatus(WorkflowDTO dto) {
 		return demoMapper.changeStatus(dto);
 	}
 }

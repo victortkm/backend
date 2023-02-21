@@ -2,6 +2,8 @@ package com.example.demo.dao.sql;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
+
+import com.example.demo.constant.CommonConst;
 import com.example.demo.dto.GroupDTO;
 import com.example.demo.dto.WorkflowDTO;
 
@@ -76,7 +78,7 @@ public class GroupProvider {
 			{
 				INSERT_INTO("demo_group");
 				VALUES("demo_group_dtls_id", "#{groupDtlsId}");
-				VALUES("pending_approval_status", "NEW");
+				VALUES("pending_approval_status", "'NEW'");
 				VALUES("pending_approval_dtls_id", "#{groupDtlsId}");
 			}
 		}.toString();
@@ -98,17 +100,30 @@ public class GroupProvider {
 		}.toString();
 		return s;
 	}
+	
+	public String getMstIdFromPendAppDtlId(Long id) {
+		return new SQL() {
+			{
+				SELECT("demo_group_id");
+				FROM("demo_group");
+				WHERE("pending_approval_dtls_id = #{id}");
+			}
+		}.toString();
+	}
 
-	public String changeStatus(GroupDTO dto) {
+	public String changeStatus(WorkflowDTO dto) {
 		String s = new SQL() {
 			{
 				UPDATE("demo_group");
-				SET("demo_group_dtls_id = {groupDtlsId}");
+				if(dto.getActionCode().equals(CommonConst.WORKFLOW_APPROVE)) {
+					SET("demo_group_dtls_id = #{docId}");
+				}
 				SET("pending_approval_status = null");
-				SET("demo_group_dtpending_approval_dtls_idls_id = null");
+				SET("pending_approval_dtls_id = null");
 				SET("updated_time = NOW()");
 				SET("updated_by = #{userId}");
-				WHERE(" demo_group_id = #{groupId} ");
+				SET("active_flag = #{recordStatus}");
+				WHERE("demo_group_id = #{mstId} ");
 			}
 		}.toString();
 		return s;
