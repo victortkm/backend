@@ -18,6 +18,8 @@ public class FunctionDTO {
 	public Long groupId;
 
 	public Long functionId;
+
+	public Long functionDtlsId;
 	
 	public List<Long> functionIds;
 	
@@ -34,6 +36,10 @@ public class FunctionDTO {
 	private String sortKey;
 	
 	private boolean isTotalCount;
+	
+	public String pendAppStatus;
+	
+	public String pendAppDtlId;
 	
 	public static FunctionDTO buildFromVo(FunctionVO vo) {
 		FunctionDTO dto = FunctionDTO.builder()

@@ -4,6 +4,7 @@ import com.example.demo.dto.FunctionDTO;
 import com.example.demo.util.BoUtil;
 import com.example.demo.vo.FunctionCategoryVO;
 import com.example.demo.vo.FunctionVO;
+import com.example.demo.vo.WorkflowVO;
 
 public interface FunctionService {
 	
@@ -12,6 +13,10 @@ public interface FunctionService {
 	public BoUtil getFunctionList(FunctionDTO dto);
 	
 	public BoUtil insertFunction(FunctionVO vo);
+	
+	public BoUtil updateFunction(FunctionVO vo);
+	
+	public BoUtil changeStatus(WorkflowVO vo);
 	
 	public BoUtil getFunctionCategoryList();
 	

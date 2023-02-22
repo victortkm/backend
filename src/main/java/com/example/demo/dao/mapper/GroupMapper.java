@@ -25,6 +25,8 @@ public interface GroupMapper {
 			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "groupDtlsId", column = "demo_group_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "groupName", column = "group_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "pendAppStatus", column = "pending_approval_status", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "pendAppDtlId", column = "pending_approval_dtls_id", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = GroupProvider.class, method = "getGroupDetailsFromGroupId")
@@ -50,9 +52,8 @@ public interface GroupMapper {
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupId" }, keyProperty = "groupId", before = false, resultType = Long.class)
 	int insertGroup(GroupDTO dto);
 
-	@InsertProvider(type = GroupProvider.class, method = "updateGroupDtls")
-	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupId" }, keyProperty = "groupId", before = false, resultType = Long.class)
-	int updateGroupDtls(GroupDTO dto);
+	@InsertProvider(type = GroupProvider.class, method = "updateGroup")
+	int updateGroup(GroupDTO dto);
 
 	@SelectProvider(type = GroupProvider.class, method = "getMstIdFromPendAppDtlId")
 	Long getMstIdFromPendAppDtlId(Long id);

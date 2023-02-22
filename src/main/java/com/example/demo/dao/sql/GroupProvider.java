@@ -5,6 +5,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 import com.example.demo.constant.CommonConst;
 import com.example.demo.dto.GroupDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkflowDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,10 @@ public class GroupProvider {
 	public String getGroupDetailsFromGroupId(Long id) {
 		return new SQL() {
 			{
-				SELECT("g.demo_group_id, g.demo_group_dtls_id, d.group_name, d.active_flag");
+				SELECT("g.demo_group_id, g.demo_group_dtls_id, d.group_name, g.pending_approval_status, g.pending_approval_dtls_id,  d.active_flag");
 				FROM("demo_group g");
 				LEFT_OUTER_JOIN("demo_group_dtls d ON g.demo_group_dtls_id = d.demo_group_dtls_id");
-				WHERE("g.demo_group_id = #{id} AND g.active_flag = 'y' AND d.active_flag = 'y'");
+				WHERE("g.demo_group_id = #{id}");
 			}
 		}.toString();
 	}
@@ -80,24 +81,23 @@ public class GroupProvider {
 				VALUES("demo_group_dtls_id", "#{groupDtlsId}");
 				VALUES("pending_approval_status", "'NEW'");
 				VALUES("pending_approval_dtls_id", "#{groupDtlsId}");
+				VALUES("active_flag", "'p'");
 			}
 		}.toString();
 	}
 
-	public String updateGroupDtls(WorkflowDTO dto) {
+	public String updateGroup(GroupDTO dto) {
 		String s = new SQL() {
 			{
-				UPDATE("wfl_job_hdr");
-
-				if(dto.getRecordStatus() != null) {
-					SET("record_status = #{recordStatus}");
-				}
-
+				UPDATE("demo_group");
+				SET("pending_approval_status = 'EDIT'");
+				SET("pending_approval_dtls_id = #{groupDtlsId}");
 				SET("updated_time = NOW()");
 				SET("updated_by = #{userId}");
-				WHERE(" job_id = #{jobId} ");
+				WHERE("demo_group_id = #{groupId} ");
 			}
 		}.toString();
+		log.info(s);
 		return s;
 	}
 	

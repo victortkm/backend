@@ -36,8 +36,8 @@ public class GroupDAO {
 		return demoMapper.insertGroup(dto);
 	}
 	
-	public int updateGroupDtls(GroupDTO dto) {
-		return demoMapper.updateGroupDtls(dto);
+	public int updateGroup(GroupDTO dto) {
+		return demoMapper.updateGroup(dto);
 	}
 	
 	public Long getMstIdFromPendAppDtlId(Long id) {

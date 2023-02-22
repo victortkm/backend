@@ -6,16 +6,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constant.CommonConst;
 import com.example.demo.dao.FunctionDAO;
+import com.example.demo.dao.WorkflowDAO;
 import com.example.demo.dto.FunctionCategoryDTO;
 import com.example.demo.dto.FunctionDTO;
+import com.example.demo.dto.GroupDTO;
 import com.example.demo.dto.GroupFunctionDTO;
 import com.example.demo.dto.ListResDTO;
+import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.FunctionService;
+import com.example.demo.service.WorkflowService;
 import com.example.demo.util.BoUtil;
 import com.example.demo.vo.FunctionCategoryVO;
 import com.example.demo.vo.FunctionVO;
 import com.example.demo.vo.GroupFunctionVO;
+import com.example.demo.vo.GroupVO;
+import com.example.demo.vo.WorkflowVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +33,14 @@ public class FunctionServiceImpl implements FunctionService {
 	@Autowired
 	FunctionDAO functionDAO;
 
+	@Autowired
+	WorkflowService wflService;
+
+	@Autowired
+	WorkflowDAO wflDAO;
+	
+//	Function
+	
 	@Override
 	public BoUtil getFunctionDetails(Long id) {
 		BoUtil boUtil = new BoUtil();
@@ -71,23 +86,123 @@ public class FunctionServiceImpl implements FunctionService {
 	}
 
 	@Override
-	public BoUtil insertFunction(FunctionVO vo) {
+	public BoUtil insertFunction(FunctionVO funcVo) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {
-			FunctionDTO dto = FunctionDTO.buildFromVo(vo);
-//			functionDAO.insertFunctionDtls(dto);
+			FunctionDTO dto = FunctionDTO.buildFromVo(funcVo);
+			functionDAO.insertFunctionDtls(dto);
 			functionDAO.insertFunction(dto);
 			log.info(dto.toString());
+
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dto.getFunctionDtlsId());
+			vo.setDocNo(dto.getFunctionDtlsId().toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
+			vo.setKeyValue(dto.getFunctionDtlsId().toString());
+			vo.setUserId(1l);
+			vo.setChangeMode("New");
+			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(dto);
+			
 		} catch (Exception e) {
 			log.error(e.toString());
 			e.printStackTrace();
 		}
 		return boUtil;
 	}
+
+	@Override
+	public BoUtil updateFunction(FunctionVO functionVo) {
+		
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+			FunctionDTO dto = FunctionDTO.buildFromVo(functionVo);
+			functionDAO.insertFunctionDtls(dto);
+			functionDAO.updateFunction(dto);
+			log.info(dto.toString());
+			
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dto.getFunctionDtlsId());
+			vo.setDocNo(dto.getFunctionDtlsId().toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
+			vo.setKeyValue(dto.getFunctionDtlsId().toString());
+			vo.setUserId(1l);
+			vo.setChangeMode("Edit");
+			wflService.init(vo);
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
+	@Override
+	public BoUtil changeStatus(WorkflowVO vo) {
+		
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+			Long docId = wflDAO.getDocIdFromJobId(vo.getJobId());
+			vo.setDocId(docId);
+			
+//			Update workflow job status
+			wflService.update(vo);
+			
+//			Update detail status
+			WorkflowDTO dto = WorkflowDTO.buildFromVo(vo);
+			
+//			query to get mst id
+			Long mstId = functionDAO.getMstIdFromPendAppDtlId(vo.getDocId());
+			log.info("mst id: " + mstId);
+			
+//			query to get change mode
+			String status = functionDAO.getFunctionDetails(mstId).getPendAppStatus();
+			
+//			update mst table
+			dto.setMstId(mstId);
+			
+			log.info("status: "+ status);
+			
+			if(vo.getActionCode().equals(CommonConst.WORKFLOW_APPROVE)) {
+				if(status.equals(CommonConst.CHANGE_MODE_DELETE)) {
+					dto.setRecordStatus(CommonConst.STATUS_INACTIVE);
+				} else if(status.equals(CommonConst.CHANGE_MODE_EDIT)) {
+					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				} else if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
+					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				}
+			} else {
+				if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
+					dto.setRecordStatus(CommonConst.STATUS_INACTIVE);
+				} else {
+					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				}
+			}
+			
+			functionDAO.changeStatus(dto);
+			
+			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+	
+//	Function Category
 	@Override
 	public BoUtil getFunctionCategoryList() {
 		BoUtil boUtil = new BoUtil();

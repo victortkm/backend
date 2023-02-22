@@ -115,7 +115,8 @@ public class GroupServiceImpl implements GroupService {
 		
 		try {
 			GroupDTO dto = GroupDTO.buildFromVo(groupVO);
-			groupDAO.updateGroupDtls(dto);
+			groupDAO.insertGroupDtls(dto);
+			groupDAO.updateGroup(dto);
 			log.info(dto.toString());
 			
 			// init workflow
@@ -162,6 +163,8 @@ public class GroupServiceImpl implements GroupService {
 			
 //			update mst table
 			dto.setMstId(mstId);
+			
+			log.info("status: "+ status);
 			
 			if(vo.getActionCode().equals(CommonConst.WORKFLOW_APPROVE)) {
 				if(status.equals(CommonConst.CHANGE_MODE_DELETE)) {

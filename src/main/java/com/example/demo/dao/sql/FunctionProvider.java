@@ -3,9 +3,10 @@ package com.example.demo.dao.sql;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
+import com.example.demo.constant.CommonConst;
 import com.example.demo.dto.FunctionCategoryDTO;
 import com.example.demo.dto.FunctionDTO;
-import com.example.demo.dto.GroupFunctionDTO;
+import com.example.demo.dto.WorkflowDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,13 +21,13 @@ public class FunctionProvider {
 		}.toString();
 	}
 	
-	public String getFunctionDetailsFromFunctionId(Long id) {
+	public String getFunctionDetails(Long id) {
 		return new SQL() {
 			{
-				SELECT("f.demo_function_id, d.function_name, d.active_flag");
+				SELECT("f.demo_function_id, d.function_name, g.pending_approval_status, g.pending_approval_dtls_id, d.active_flag");
 				FROM("demo_function f");
 				LEFT_OUTER_JOIN("demo_user_dtls d ON f.demo_user_dtls_id = d.demo_user_dtls_id");
-				WHERE("f.demo_function_id = #{id} AND d.active_flag = 'y'");
+				WHERE("f.demo_function_id = #{id}");
 			}
 		}.toString();
 	}
@@ -59,23 +60,68 @@ public class FunctionProvider {
 		return s;
 	}
 
-//	public String insertFunctionDtls(FunctionDTO dto) {
-//		return new SQL() {
-//			{
-//				INSERT_INTO("demo_function_dtls");
-//				VALUES("function_name", "#{functionName}");
-//				VALUES("demo_function_id", "#{functionId}");
-//			}
-//		}.toString();
-//	}
-
-	public String insertFunction(FunctionDTO dto) {
+	public String insertFunctionDtls(FunctionDTO dto) {
 		return new SQL() {
 			{
 				INSERT_INTO("demo_function_dtls");
 				VALUES("function_name", "#{functionName}");
 			}
 		}.toString();
+	}
+
+	public String insertFunction(FunctionDTO dto) {
+		return new SQL() {
+			{
+				INSERT_INTO("demo_function_dtls");
+				VALUES("function_name", "#{functionName}");
+				VALUES("pending_approval_status", "'NEW'");
+				VALUES("pending_approval_dtls_id", "#{groupDtlsId}");
+				VALUES("active_flag", "'p'");
+			}
+		}.toString();
+	}
+
+	public String updateFunction(FunctionDTO dto) {
+		String s = new SQL() {
+			{
+				UPDATE("demo_function");
+				SET("pending_approval_status = 'EDIT'");
+				SET("pending_approval_dtls_id = #{functionDtlsId}");
+				SET("updated_time = NOW()");
+				SET("updated_by = #{userId}");
+				WHERE("demo_function_id = #{functionId} ");
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+	
+	public String getMstIdFromPendAppDtlId(Long id) {
+		return new SQL() {
+			{
+				SELECT("demo_group_id");
+				FROM("demo_group");
+				WHERE("pending_approval_dtls_id = #{id}");
+			}
+		}.toString();
+	}
+
+	public String changeStatus(WorkflowDTO dto) {
+		String s = new SQL() {
+			{
+				UPDATE("demo_group");
+				if(dto.getActionCode().equals(CommonConst.WORKFLOW_APPROVE)) {
+					SET("demo_group_dtls_id = #{docId}");
+				}
+				SET("pending_approval_status = null");
+				SET("pending_approval_dtls_id = null");
+				SET("updated_time = NOW()");
+				SET("updated_by = #{userId}");
+				SET("active_flag = #{recordStatus}");
+				WHERE("demo_group_id = #{mstId} ");
+			}
+		}.toString();
+		return s;
 	}
 	
 	public String getFunctionCategoryList() {

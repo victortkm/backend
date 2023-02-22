@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GroupDTO {
 	
+	public Long userId;
+	
 	public Long groupId;
 	
 	public Long groupDtlsId;
