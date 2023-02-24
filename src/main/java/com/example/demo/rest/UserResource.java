@@ -98,6 +98,16 @@ public class UserResource {
 		return boUtil;
 	}
 
+	@RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil deleteUser(@RequestBody UserVO userVo) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.deleteUser(userVo);
+		
+		log.info("----- deleteUser userVo:"+ userVo);
+		
+		return boUtil;
+	}
+
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
 	public BoUtil changeStatus(@RequestBody WorkflowVO vo) {
 		BoUtil boUtil = new BoUtil();

@@ -7,14 +7,12 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
 import com.example.demo.dao.sql.GroupProvider;
-import com.example.demo.dao.sql.UserProvider;
 import com.example.demo.dto.GroupDTO;
 import com.example.demo.dto.WorkflowDTO;
 
@@ -52,8 +50,11 @@ public interface GroupMapper {
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS groupId" }, keyProperty = "groupId", before = false, resultType = Long.class)
 	int insertGroup(GroupDTO dto);
 
-	@InsertProvider(type = GroupProvider.class, method = "updateGroup")
+	@UpdateProvider(type = GroupProvider.class, method = "updateGroup")
 	int updateGroup(GroupDTO dto);
+
+	@UpdateProvider(type = GroupProvider.class, method = "deleteGroup")
+	int deleteGroup(GroupDTO dto);
 
 	@SelectProvider(type = GroupProvider.class, method = "getMstIdFromPendAppDtlId")
 	Long getMstIdFromPendAppDtlId(Long id);

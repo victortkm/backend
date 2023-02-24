@@ -11,5 +11,7 @@ public class GroupVO {
 	public Long groupId;
 	
 	public String groupName;
+	
+	public Long userId;
 
 }

@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FunctionDTO {
 	
+	public Long userId;
+	
 	public Long groupId;
 
 	public Long functionId;
@@ -24,6 +26,8 @@ public class FunctionDTO {
 	public List<Long> functionIds;
 	
 	public String functionName;
+
+	public Long functionCatId;
 	
 	public String status;
 
@@ -48,6 +52,8 @@ public class FunctionDTO {
 				.functionIds(vo.getFunctionIds())
 				.functionName(vo.getFunctionName())
 				.status(vo.getStatus())
+				.userId(vo.getUserId())
+				.functionCatId(vo.getFunctionCatId())
 				.build();
 		return dto;
 	}

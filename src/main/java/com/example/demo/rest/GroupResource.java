@@ -12,6 +12,7 @@ import com.example.demo.dto.GroupDTO;
 import com.example.demo.service.GroupService;
 import com.example.demo.util.*;
 import com.example.demo.vo.GroupVO;
+import com.example.demo.vo.UserVO;
 import com.example.demo.vo.WorkflowVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -82,11 +83,21 @@ public class GroupResource {
 	}
 
 	@RequestMapping(value = "/updateGroup", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
-	public BoUtil changeStatus(@RequestBody GroupVO groupVO) {
+	public BoUtil updateGroup(@RequestBody GroupVO groupVO) {
 		BoUtil boUtil = new BoUtil();
 		boUtil = demoService.updateGroup(groupVO);
 		
 		log.info("----- updateGroup groupVO:"+ groupVO);
+		
+		return boUtil;
+	}
+
+	@RequestMapping(value = "/deleteGroup", method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil deleteGroup(@RequestBody GroupVO groupVO) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.deleteGroup(groupVO);
+		
+		log.info("----- deleteGroup groupVO:"+ groupVO);
 		
 		return boUtil;
 	}

@@ -14,5 +14,7 @@ public class FunctionCategoryVO {
 	public String categoryName;
 	
 	public String status;
+	
+	public Long userId;
 
 }

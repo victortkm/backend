@@ -14,16 +14,35 @@ import lombok.NoArgsConstructor;
 public class FunctionCategoryDTO {
 
 	public Long funcCatId;
+
+	public Long funcCatDtlsId;
 	
 	public String categoryName;
 	
 	public String status;
+
+	private Integer pageNumber;
+	
+	private Integer pageSize;
+	
+	private Integer offset;
+	
+	private String sortKey;
+	
+	private boolean isTotalCount;
+	
+	public String pendAppStatus;
+	
+	public String pendAppDtlId;
+	
+	public Long userId;
 	
 	public static FunctionCategoryDTO buildFromVo(FunctionCategoryVO vo) {
 		FunctionCategoryDTO dto = FunctionCategoryDTO.builder()
 				.funcCatId(vo.getFuncCatId())
 				.categoryName(vo.getCategoryName())
 				.status(vo.getStatus())
+				.userId(vo.getUserId())
 				.build();
 		return dto;
 	}

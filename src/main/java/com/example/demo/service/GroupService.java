@@ -15,5 +15,7 @@ public interface GroupService {
 	
 	public BoUtil updateGroup(GroupVO groupVO);
 	
+	public BoUtil deleteGroup(GroupVO groupVO);
+	
 	public BoUtil changeStatus(WorkflowVO vo);
 }

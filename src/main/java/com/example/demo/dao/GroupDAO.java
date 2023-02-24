@@ -40,6 +40,10 @@ public class GroupDAO {
 		return demoMapper.updateGroup(dto);
 	}
 	
+	public int deleteGroup(GroupDTO dto) {
+		return demoMapper.deleteGroup(dto);
+	}
+	
 	public Long getMstIdFromPendAppDtlId(Long id) {
 		return demoMapper.getMstIdFromPendAppDtlId(id);
 	}

@@ -15,5 +15,7 @@ public interface UserService {
 	
 	public BoUtil updateUser(UserVO userVo);
 	
+	public BoUtil deleteUser(UserVO userVo);
+	
 	public BoUtil changeStatus(WorkflowVO vo);
 }

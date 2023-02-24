@@ -12,6 +12,7 @@ public class CommonConst {
 	public static final Long WFL_TYPE_ID_FUNCTION_MAINTENANCE = 2l;
 	public static final Long WFL_TYPE_ID_GROUP_FUNCTION_MAINTENANCE = 3l;
 	public static final Long WFL_TYPE_ID_USER_MAINTENANCE = 4l; 
+	public static final Long WFL_TYPE_ID_FUNCTION_CATEGORY_MAINTENANCE = 5l; 
 	
 
 	public static final String CHANGE_MODE_NEW = "NEW"; 

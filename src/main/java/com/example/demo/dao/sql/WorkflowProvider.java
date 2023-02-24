@@ -78,9 +78,9 @@ public class WorkflowProvider {
 				VALUES("job_id", "#{jobId}");
 				VALUES("from_post_user_id", "1");
 				VALUES("action_code", "#{actionCode}");
-				VALUES("created_by", "1");
+				VALUES("created_by", "#{userId}");
 				VALUES("created_time", "now()");
-				VALUES("updated_by", "1");
+				VALUES("updated_by", "#{userId}");
 				VALUES("updated_time", "now()");
 			}
 		}.toString();

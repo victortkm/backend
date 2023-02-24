@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_USER_MAINTENANCE);
 			vo.setKeyValue(dto.getUserDtlsId().toString());
 			vo.setUserId(1l);
-			vo.setChangeMode("New");
+			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -125,7 +125,42 @@ public class UserServiceImpl implements UserService {
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_USER_MAINTENANCE);
 			vo.setKeyValue(dto.getUserDtlsId().toString());
 			vo.setUserId(1l);
-			vo.setChangeMode("Edit");
+			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
+			wflService.init(vo);
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
+	@Override
+	public BoUtil deleteUser(UserVO userVo) {
+		
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+
+			Long dtlId = userDAO.getUserDetails(userVo.getUserId()).getUserDtlsId();
+			
+			
+			UserDTO dto = UserDTO.buildFromVo(userVo);
+			dto.setUserDtlsId(dtlId);
+			userDAO.deleteUser(dto);
+			log.info(userVo.toString());
+			
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dtlId);
+			vo.setDocNo(dtlId.toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_USER_MAINTENANCE);
+			vo.setKeyValue(dtlId.toString());
+			vo.setUserId(1l);
+			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
 			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -155,7 +190,7 @@ public class UserServiceImpl implements UserService {
 			
 //			query to get mst id
 			Long mstId = userDAO.getMstIdFromPendAppDtlId(vo.getDocId());
-			log.info("mst id: " + mstId);
+			log.info("mst id: " + mstId + ", docid: " + vo.getDocId());
 			
 //			query to get change mode
 			String status = userDAO.getUserDetails(mstId).getPendAppStatus();

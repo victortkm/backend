@@ -12,7 +12,6 @@ import com.example.demo.dao.WorkflowDAO;
 import com.example.demo.dto.FunctionCategoryDTO;
 import com.example.demo.dto.FunctionDTO;
 import com.example.demo.dto.GroupDTO;
-import com.example.demo.dto.GroupFunctionDTO;
 import com.example.demo.dto.ListResDTO;
 import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.FunctionService;
@@ -20,7 +19,6 @@ import com.example.demo.service.WorkflowService;
 import com.example.demo.util.BoUtil;
 import com.example.demo.vo.FunctionCategoryVO;
 import com.example.demo.vo.FunctionVO;
-import com.example.demo.vo.GroupFunctionVO;
 import com.example.demo.vo.GroupVO;
 import com.example.demo.vo.WorkflowVO;
 
@@ -102,7 +100,7 @@ public class FunctionServiceImpl implements FunctionService {
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
 			vo.setKeyValue(dto.getFunctionDtlsId().toString());
 			vo.setUserId(1l);
-			vo.setChangeMode("New");
+			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -130,10 +128,44 @@ public class FunctionServiceImpl implements FunctionService {
 			WorkflowVO vo = new WorkflowVO();
 			vo.setDocId(dto.getFunctionDtlsId());
 			vo.setDocNo(dto.getFunctionDtlsId().toString());
-			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
 			vo.setKeyValue(dto.getFunctionDtlsId().toString());
 			vo.setUserId(1l);
-			vo.setChangeMode("Edit");
+			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
+			wflService.init(vo);
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
+	@Override
+	public BoUtil deleteFunction(FunctionVO functionVo) {
+		
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+
+			Long dtlId = functionDAO.getFunctionDetails(functionVo.getFunctionId()).getFunctionDtlsId();
+			
+			FunctionDTO dto = FunctionDTO.buildFromVo(functionVo);
+			dto.setFunctionDtlsId(dtlId);
+			functionDAO.deleteFunction(dto);
+			log.info(functionVo.toString());
+			
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dtlId);
+			vo.setDocNo(dtlId.toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
+			vo.setKeyValue(dtlId.toString());
+			vo.setUserId(1l);
+			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
 			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -162,6 +194,7 @@ public class FunctionServiceImpl implements FunctionService {
 			WorkflowDTO dto = WorkflowDTO.buildFromVo(vo);
 			
 //			query to get mst id
+			log.info("dtl id: " + vo.getDocId());
 			Long mstId = functionDAO.getMstIdFromPendAppDtlId(vo.getDocId());
 			log.info("mst id: " + mstId);
 			
@@ -204,15 +237,23 @@ public class FunctionServiceImpl implements FunctionService {
 	
 //	Function Category
 	@Override
-	public BoUtil getFunctionCategoryList() {
+	public BoUtil getFunctionCategoryList(FunctionCategoryDTO dto) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {
 			
-			List<HashMap<String, Object>> list = functionDAO.getFunctionCategoryList();
+			List<HashMap<String, Object>> list = functionDAO.getFunctionCategoryList(dto);
+			
+			ListResDTO res = new ListResDTO();
+			res.setList(list);
+			res.setPageNumber(dto.getPageNumber());
+			
+			dto.setTotalCount(true);
+			Integer totalCount = functionDAO.getFunctionCategoryListTotalCount(dto);
+			res.setTotalCount(totalCount);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
-			boUtil.setData(list);
+			boUtil.setData(res);
 			
 		} catch (Exception e) {
 			log.error(e.toString());
@@ -222,17 +263,28 @@ public class FunctionServiceImpl implements FunctionService {
 	}
 
 	@Override
-	public BoUtil insertCategoryFunction(FunctionCategoryVO vo) {
+	public BoUtil insertCategoryFunction(FunctionCategoryVO catVo) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {
-			FunctionCategoryDTO dto = FunctionCategoryDTO.buildFromVo(vo);
-			dto.setStatus("A");
+			FunctionCategoryDTO dto = FunctionCategoryDTO.buildFromVo(catVo);
+			functionDAO.insertFunctionCategoryDtls(dto);
 			functionDAO.insertFunctionCategory(dto);
 			log.info(dto.toString());
+
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dto.getFuncCatDtlsId());
+			vo.setDocNo(dto.getFuncCatDtlsId().toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
+			vo.setKeyValue(dto.getFuncCatDtlsId().toString());
+			vo.setUserId(dto.getUserId());
+			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
+			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(dto);
+			
 		} catch (Exception e) {
 			log.error(e.toString());
 			e.printStackTrace();
@@ -241,18 +293,120 @@ public class FunctionServiceImpl implements FunctionService {
 	}
 
 	@Override
-	public BoUtil deleteFunctionCategory(FunctionCategoryVO vo) {
+	public BoUtil updateFunctionCategory(FunctionCategoryVO catVo) {
+		
 		BoUtil boUtil = new BoUtil();
 		
 		try {
-			FunctionCategoryDTO dto = FunctionCategoryDTO.buildFromVo(vo);
-			dto.setStatus("N");
-			log.info(dto.toString());
+			FunctionCategoryDTO dto = FunctionCategoryDTO.buildFromVo(catVo);
+			functionDAO.insertFunctionCategoryDtls(dto);
 			functionDAO.updateFunctionCategory(dto);
 			log.info(dto.toString());
 			
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dto.getFuncCatDtlsId());
+			vo.setDocNo(dto.getFuncCatDtlsId().toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
+			vo.setKeyValue(dto.getFuncCatDtlsId().toString());
+			vo.setUserId(1l);
+			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
+			wflService.init(vo);
+			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(dto);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
+	@Override
+	public BoUtil deleteFunctionCategory(FunctionCategoryVO catVo) {
+		
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+
+			Long dtlId = functionDAO.getFunctionCategoryDetails(catVo.getFuncCatId()).getFuncCatDtlsId();
+			
+			FunctionCategoryDTO dto = FunctionCategoryDTO.buildFromVo(catVo);
+			dto.setFuncCatDtlsId(dtlId);
+			functionDAO.deleteFunctionCategory(dto);
+			log.info(catVo.toString());
+			
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dtlId);
+			vo.setDocNo(dtlId.toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_CATEGORY_MAINTENANCE);
+			vo.setKeyValue(dtlId.toString());
+			vo.setUserId(1l);
+			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
+			wflService.init(vo);
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
+	@Override
+	public BoUtil catChangeStatus(WorkflowVO vo) {
+		
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+			Long docId = wflDAO.getDocIdFromJobId(vo.getJobId());
+			vo.setDocId(docId);
+			
+//			Update workflow job status
+			wflService.update(vo);
+			
+//			Update detail status
+			WorkflowDTO dto = WorkflowDTO.buildFromVo(vo);
+			
+//			query to get mst id
+			log.info("dtl id: " + vo.getDocId());
+			Long mstId = functionDAO.getCatMstIdFromPendAppDtlId(vo.getDocId());
+			log.info("mst id: " + mstId);
+			
+//			query to get change mode
+			String status = functionDAO.getFunctionCategoryDetails(mstId).getPendAppStatus();
+			
+//			update mst table
+			dto.setMstId(mstId);
+			
+			log.info("status: "+ status);
+			
+			if(vo.getActionCode().equals(CommonConst.WORKFLOW_APPROVE)) {
+				if(status.equals(CommonConst.CHANGE_MODE_DELETE)) {
+					dto.setRecordStatus(CommonConst.STATUS_INACTIVE);
+				} else if(status.equals(CommonConst.CHANGE_MODE_EDIT)) {
+					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				} else if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
+					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				}
+			} else {
+				if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
+					dto.setRecordStatus(CommonConst.STATUS_INACTIVE);
+				} else {
+					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+				}
+			}
+			
+			functionDAO.catChangeStatus(dto);
+			
+			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			
 		} catch (Exception e) {
 			log.error(e.toString());
 			e.printStackTrace();

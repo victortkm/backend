@@ -34,6 +34,7 @@ public class WorkflowDTO {
 				.keyValue(vo.getKeyValue())
 				.recordStatus(vo.getRecordStatus())
 				.actionCode(vo.getActionCode())
+				.userId(vo.getUserId())
 				.build();
 		return dto;
 	}

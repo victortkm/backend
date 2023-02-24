@@ -33,6 +33,8 @@ public class UserDTO {
 	
 	public String pendAppDtlId;
 	
+	public Long userIdFrom;
+	
 	private Integer pageNumber;
 	
 	private Integer pageSize;
@@ -50,6 +52,7 @@ public class UserDTO {
 				.firstName(vo.getFirstName())
 				.lastName(vo.getLastName())
 				.groupId(vo.getGroupId())
+				.userIdFrom(vo.getUserIdFrom())
 				.build();
 		return dto;
 	}

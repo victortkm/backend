@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.dao.mapper.FunctionMapper;
 import com.example.demo.dto.FunctionCategoryDTO;
 import com.example.demo.dto.FunctionDTO;
-import com.example.demo.dto.GroupDTO;
-import com.example.demo.dto.GroupFunctionDTO;
 import com.example.demo.dto.WorkflowDTO;
 
 @Repository
@@ -45,6 +43,10 @@ public class FunctionDAO {
 		return demoMapper.updateFunction(dto);
 	}
 	
+	public int deleteFunction(FunctionDTO dto) {
+		return demoMapper.deleteFunction(dto);
+	}
+	
 	public Long getMstIdFromPendAppDtlId(Long id) {
 		return demoMapper.getMstIdFromPendAppDtlId(id);
 	}
@@ -54,16 +56,40 @@ public class FunctionDAO {
 	}
 	
 //	Function Category
-	public List<HashMap<String, Object>> getFunctionCategoryList() {
-		return demoMapper.getFunctionCategoryList();
+	
+	public FunctionCategoryDTO getFunctionCategoryDetails(Long id) {
+		return demoMapper.getFunctionCategoryDetails(id);
 	}
 	
-	public int updateFunctionCategory(FunctionCategoryDTO dto) {
-		return demoMapper.updateFunctionCategory(dto);
+	public List<HashMap<String, Object>> getFunctionCategoryList(FunctionCategoryDTO dto) {
+		return demoMapper.getFunctionCategoryList(dto);
+	}
+	
+	public Integer getFunctionCategoryListTotalCount(FunctionCategoryDTO dto) {
+		return demoMapper.getFunctionCategoryListTotalCount(dto);
 	}
 	
 	public int insertFunctionCategory(FunctionCategoryDTO dto) {
 		return demoMapper.insertFunctionCategory(dto);
 	}
 	
+	public int insertFunctionCategoryDtls(FunctionCategoryDTO dto) {
+		return demoMapper.insertFunctionCategoryDtls(dto);
+	}
+	
+	public int updateFunctionCategory(FunctionCategoryDTO dto) {
+		return demoMapper.updateFunctionCategory(dto);
+	}
+	
+	public int deleteFunctionCategory(FunctionCategoryDTO dto) {
+		return demoMapper.deleteFunctionCategory(dto);
+	}
+	
+	public Long getCatMstIdFromPendAppDtlId(Long id) {
+		return demoMapper.getCatMstIdFromPendAppDtlId(id);
+	}
+	
+	public int catChangeStatus(WorkflowDTO dto) {
+		return demoMapper.catChangeStatus(dto);
+	}
 }

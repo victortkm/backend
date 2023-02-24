@@ -11,11 +11,13 @@ import com.example.demo.dao.GroupDAO;
 import com.example.demo.dao.WorkflowDAO;
 import com.example.demo.dto.GroupDTO;
 import com.example.demo.dto.ListResDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.GroupService;
 import com.example.demo.service.WorkflowService;
 import com.example.demo.util.BoUtil;
 import com.example.demo.vo.GroupVO;
+import com.example.demo.vo.UserVO;
 import com.example.demo.vo.WorkflowVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -95,7 +97,7 @@ public class GroupServiceImpl implements GroupService {
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
 			vo.setKeyValue(dto.getGroupDtlsId().toString());
 			vo.setUserId(1l);
-			vo.setChangeMode("New");
+			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -126,7 +128,41 @@ public class GroupServiceImpl implements GroupService {
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
 			vo.setKeyValue(dto.getGroupDtlsId().toString());
 			vo.setUserId(1l);
-			vo.setChangeMode("Edit");
+			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
+			wflService.init(vo);
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+
+	@Override
+	public BoUtil deleteGroup(GroupVO groupVO) {
+		
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+
+			Long dtlId = groupDAO.getGroupDetails(groupVO.getGroupId()).getGroupDtlsId();
+			
+			GroupDTO dto = GroupDTO.buildFromVo(groupVO);
+			dto.setGroupDtlsId(dtlId);
+			groupDAO.deleteGroup(dto);
+			log.info(groupVO.toString());
+			
+			// init workflow
+			WorkflowVO vo = new WorkflowVO();
+			vo.setDocId(dtlId);
+			vo.setDocNo(dtlId.toString());
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
+			vo.setKeyValue(dtlId.toString());
+			vo.setUserId(1l);
+			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
 			wflService.init(vo);
 			
 			boUtil = BoUtil.getDefaultTrueBo();

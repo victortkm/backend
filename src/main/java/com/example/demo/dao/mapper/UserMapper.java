@@ -65,6 +65,9 @@ public interface UserMapper {
 	@UpdateProvider(type = UserProvider.class, method = "updateUser")
 	int updateUser(UserDTO dto);
 
+	@UpdateProvider(type = UserProvider.class, method = "deleteUser")
+	int deleteUser(UserDTO dto);
+
 	@SelectProvider(type = UserProvider.class, method = "getMstIdFromPendAppDtlId")
 	Long getMstIdFromPendAppDtlId(Long id);
 	

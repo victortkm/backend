@@ -21,7 +21,7 @@ public class UserProvider {
 	}
 	
 	public String getUserDetailsFromUserId(Long id) {
-		return new SQL() {
+		String s = new SQL() {
 			{
 				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.pending_approval_status, u.pending_approval_dtls_id, d.demo_group_id, d.active_flag");
 				FROM("demo_user u");
@@ -31,6 +31,8 @@ public class UserProvider {
 				WHERE("u.demo_user_id = #{id}");
 			}
 		}.toString();
+		log.info(s);
+		return s;
 	}
 	
 	public String getUserList(UserDTO dto) {
@@ -103,6 +105,8 @@ public class UserProvider {
 				VALUES("demo_user_dtls_id", "#{userDtlsId}");
 				VALUES("pending_approval_status", "'NEW'");
 				VALUES("pending_approval_dtls_id", "#{userDtlsId}");
+				VALUES("created_by", "#{userIdFrom}");
+				VALUES("updated_by", "#{userIdFrom}");
 				VALUES("active_flag", "'p'");
 			}
 		}.toString();
@@ -115,7 +119,22 @@ public class UserProvider {
 				SET("pending_approval_status = 'EDIT'");
 				SET("pending_approval_dtls_id = #{userDtlsId}");
 				SET("updated_time = NOW()");
-				SET("updated_by = #{userId}");
+				SET("updated_by = #{userIdFrom}");
+				WHERE("demo_user_id = #{userId} ");
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+
+	public String deleteUser(UserDTO dto) {
+		String s = new SQL() {
+			{
+				UPDATE("demo_user");
+				SET("pending_approval_status = 'DELETE'");
+				SET("pending_approval_dtls_id = #{userDtlsId}");
+				SET("updated_time = NOW()");
+				SET("updated_by = #{userIdFrom}");
 				WHERE("demo_user_id = #{userId} ");
 			}
 		}.toString();

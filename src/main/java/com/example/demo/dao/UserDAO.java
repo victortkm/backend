@@ -40,6 +40,10 @@ public class UserDAO {
 		return demoMapper.updateUser(dto);
 	}
 	
+	public int deleteUser(UserDTO dto) {
+		return demoMapper.deleteUser(dto);
+	}
+	
 	public Long getMstIdFromPendAppDtlId(Long id) {
 		return demoMapper.getMstIdFromPendAppDtlId(id);
 	}

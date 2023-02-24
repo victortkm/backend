@@ -17,7 +17,11 @@ public class FunctionVO {
 	public List<Long> functionIds;
 	
 	public String functionName;
+
+	public Long functionCatId;
 	
 	public String status;
+	
+	public Long userId;
 
 }

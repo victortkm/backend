@@ -5,7 +5,6 @@ import org.apache.ibatis.jdbc.SQL;
 
 import com.example.demo.constant.CommonConst;
 import com.example.demo.dto.GroupDTO;
-import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkflowDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +41,7 @@ public class GroupProvider {
 				}
 				FROM("demo_group g");
 				LEFT_OUTER_JOIN("demo_group_dtls d ON g.demo_group_dtls_id = d.demo_group_dtls_id");
-				WHERE("g.active_flag = 'y' AND d.active_flag = 'y'");
+				WHERE("g.active_flag != '" + CommonConst.STATUS_INACTIVE + "'");
 				
 				if (StringUtils.isNotBlank(dto.getGroupName())) {
 					AND();
@@ -81,6 +80,8 @@ public class GroupProvider {
 				VALUES("demo_group_dtls_id", "#{groupDtlsId}");
 				VALUES("pending_approval_status", "'NEW'");
 				VALUES("pending_approval_dtls_id", "#{groupDtlsId}");
+				VALUES("created_by", "#{userId}");
+				VALUES("updated_by", "#{userId}");
 				VALUES("active_flag", "'p'");
 			}
 		}.toString();
@@ -91,6 +92,21 @@ public class GroupProvider {
 			{
 				UPDATE("demo_group");
 				SET("pending_approval_status = 'EDIT'");
+				SET("pending_approval_dtls_id = #{groupDtlsId}");
+				SET("updated_time = NOW()");
+				SET("updated_by = #{userId}");
+				WHERE("demo_group_id = #{groupId} ");
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+
+	public String deleteGroup(GroupDTO dto) {
+		String s = new SQL() {
+			{
+				UPDATE("demo_group");
+				SET("pending_approval_status = 'DELETE'");
 				SET("pending_approval_dtls_id = #{groupDtlsId}");
 				SET("updated_time = NOW()");
 				SET("updated_by = #{userId}");

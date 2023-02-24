@@ -38,7 +38,11 @@ public class GroupDTO {
 	public String pendAppDtlId;
 	
 	public static GroupDTO buildFromVo(GroupVO vo) {
-		GroupDTO dto = GroupDTO.builder().groupName(vo.getGroupName()).groupId(vo.getGroupId()).build();
+		GroupDTO dto = GroupDTO.builder()
+				.groupName(vo.getGroupName())
+				.groupId(vo.getGroupId())
+				.userId(vo.getUserId())
+				.build();
 		return dto;
 	}
 }
