@@ -17,7 +17,7 @@ public class FunctionProvider {
 	public String getFunctionDetails(Long id) {
 		return new SQL() {
 			{
-				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, f.pending_approval_status, f.pending_approval_dtls_id, d.active_flag,"
+				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, f.pending_approval_status, f.pending_approval_dtls_id, f.active_flag,"
 						+ "DATE_FORMAT(f.created_time, '%Y-%m-%e %H:%i:%s') AS created_time, DATE_FORMAT(f.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time, f.active_flag");
 				FROM("demo_function f");
 				LEFT_OUTER_JOIN("demo_function_dtls d ON f.demo_function_dtls_id = d.demo_function_dtls_id");
