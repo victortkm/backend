@@ -276,7 +276,7 @@ public class FunctionServiceImpl implements FunctionService {
 			WorkflowVO vo = new WorkflowVO();
 			vo.setDocId(dto.getFuncCatDtlsId());
 			vo.setDocNo(dto.getFuncCatDtlsId().toString());
-			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_CATEGORY_MAINTENANCE);
 			vo.setKeyValue(dto.getFuncCatDtlsId().toString());
 			vo.setUserId(dto.getUserId());
 			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
@@ -307,7 +307,7 @@ public class FunctionServiceImpl implements FunctionService {
 			WorkflowVO vo = new WorkflowVO();
 			vo.setDocId(dto.getFuncCatDtlsId());
 			vo.setDocNo(dto.getFuncCatDtlsId().toString());
-			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
+			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_CATEGORY_MAINTENANCE);
 			vo.setKeyValue(dto.getFuncCatDtlsId().toString());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);

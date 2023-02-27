@@ -145,6 +145,17 @@ public class FunctionResource {
 		return boUtil;
 	}
 
+	@RequestMapping(value = "/updateFunctionCategory", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil updateFunctionCategory(@RequestBody FunctionCategoryVO vo) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.updateFunctionCategory(vo);
+		
+		log.info("----- updateFunctionCategory functionVO:"+ vo);
+		
+		return boUtil;
+	}
+
+
 	@RequestMapping(value = "/deleteFunctionCategory", method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
 	public BoUtil deleteFunctionCategory(@RequestBody FunctionCategoryVO vo) {
 		BoUtil boUtil = new BoUtil();

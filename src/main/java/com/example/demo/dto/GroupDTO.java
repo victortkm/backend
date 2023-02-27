@@ -37,6 +37,10 @@ public class GroupDTO {
 	
 	public String pendAppDtlId;
 	
+	public String createdTime;
+	
+	public String updatedTime;
+	
 	public static GroupDTO buildFromVo(GroupVO vo) {
 		GroupDTO dto = GroupDTO.builder()
 				.groupName(vo.getGroupName())

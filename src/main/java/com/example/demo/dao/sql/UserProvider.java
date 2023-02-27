@@ -23,7 +23,9 @@ public class UserProvider {
 	public String getUserDetailsFromUserId(Long id) {
 		String s = new SQL() {
 			{
-				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.pending_approval_status, u.pending_approval_dtls_id, d.demo_group_id, d.active_flag");
+				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.pending_approval_status,"
+						+ "u.pending_approval_dtls_id, d.demo_group_id, d.active_flag, DATE_FORMAT(u.created_time, '%Y-%m-%e %H:%i:%s') AS created_time,"
+						+ "DATE_FORMAT(u.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time");
 				FROM("demo_user u");
 				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
 				LEFT_OUTER_JOIN("demo_group g ON g.demo_group_id = d.demo_group_id");
@@ -41,7 +43,8 @@ public class UserProvider {
 				if(dto.isTotalCount()) {
 					SELECT("COUNT(*)");
 				} else {
-					SELECT("u.demo_user_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.active_flag");
+					SELECT("u.demo_user_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name,"
+							+ "DATE_FORMAT(u.created_time, '%Y-%m-%e %H:%i:%s') AS created_time, DATE_FORMAT(u.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time, u.active_flag");
 				}
 				FROM("demo_user u");
 				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");

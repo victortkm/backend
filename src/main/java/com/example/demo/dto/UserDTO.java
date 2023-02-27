@@ -45,6 +45,10 @@ public class UserDTO {
 	
 	private boolean isTotalCount;
 	
+	public String createdTime;
+	
+	public String updatedTime;
+	
 	public static UserDTO buildFromVo(UserVO vo) {
 		UserDTO dto = UserDTO.builder()
 				.userId(vo.getUserId())

@@ -45,6 +45,10 @@ public class FunctionDTO {
 	
 	public String pendAppDtlId;
 	
+	public String createdTime;
+	
+	public String updatedTime;
+	
 	public static FunctionDTO buildFromVo(FunctionVO vo) {
 		FunctionDTO dto = FunctionDTO.builder()
 				.groupId(vo.getGroupId())

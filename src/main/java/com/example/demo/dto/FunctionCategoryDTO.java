@@ -37,6 +37,10 @@ public class FunctionCategoryDTO {
 	
 	public Long userId;
 	
+	public String createdTime;
+	
+	public String updatedTime;
+	
 	public static FunctionCategoryDTO buildFromVo(FunctionCategoryVO vo) {
 		FunctionCategoryDTO dto = FunctionCategoryDTO.builder()
 				.funcCatId(vo.getFuncCatId())

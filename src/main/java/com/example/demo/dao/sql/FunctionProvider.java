@@ -17,7 +17,8 @@ public class FunctionProvider {
 	public String getFunctionDetails(Long id) {
 		return new SQL() {
 			{
-				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, f.pending_approval_status, f.pending_approval_dtls_id, d.active_flag");
+				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, f.pending_approval_status, f.pending_approval_dtls_id, d.active_flag,"
+						+ "DATE_FORMAT(f.created_time, '%Y-%m-%e %H:%i:%s') AS created_time, DATE_FORMAT(f.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time, f.active_flag");
 				FROM("demo_function f");
 				LEFT_OUTER_JOIN("demo_function_dtls d ON f.demo_function_dtls_id = d.demo_function_dtls_id");
 				WHERE("f.demo_function_id = #{id}");
@@ -31,7 +32,8 @@ public class FunctionProvider {
 				if(dto.isTotalCount()) {
 					SELECT("COUNT(*)");
 				} else {
-					SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name");
+					SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, DATE_FORMAT(f.created_time, '%Y-%m-%e %H:%i:%s') AS created_time,"
+							+ "DATE_FORMAT(f.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time, f.active_flag");
 				}
 				FROM("demo_function f");
 				LEFT_OUTER_JOIN("demo_function_dtls d ON f.demo_function_dtls_id = d.demo_function_dtls_id");
@@ -136,14 +138,18 @@ public class FunctionProvider {
 	}
 	
 	public String getFunctionCategoryDetails(Long id) {
-		return new SQL() {
+		String s = new SQL() {
 			{
-				SELECT("fc.demo_function_category_id, fc.demo_function_category_dtls_id, d.function_category_name, fc.pending_approval_status, fc.pending_approval_dtls_id, d.active_flag");
+				SELECT("fc.demo_function_category_id, fc.demo_function_category_dtls_id, d.function_category_name, fc.pending_approval_status, fc.pending_approval_dtls_id,"
+						+ "d.active_flag, DATE_FORMAT(fc.created_time, '%Y-%m-%e %H:%i:%s') AS created_time, DATE_FORMAT(fc.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time"
+						+ ", fc.active_flag");
 				FROM("demo_function_category fc");
-				LEFT_OUTER_JOIN("demo_function_dtls d ON fc.demo_function_category_dtls_id = d.demo_function_category_dtls_id");
-				WHERE("fc.demo_function_id = #{id}");
+				LEFT_OUTER_JOIN("demo_function_category_dtls d ON fc.demo_function_category_dtls_id = d.demo_function_category_dtls_id");
+				WHERE("fc.demo_function_category_id = #{id}");
 			}
 		}.toString();
+		log.info(s);
+		return s;
 	}
 	
 	public String getFunctionCategoryList(FunctionCategoryDTO dto) {
@@ -152,7 +158,8 @@ public class FunctionProvider {
 				if(dto.isTotalCount()) {
 					SELECT("COUNT(*)");
 				} else {
-					SELECT("fc.demo_function_category_id, fc.demo_function_category_dtls_id, d.function_category_name");
+					SELECT("fc.demo_function_category_id, fc.demo_function_category_dtls_id, d.function_category_name, DATE_FORMAT(fc.created_time, '%Y-%m-%e %H:%i:%s') AS created_time,"
+							+ "DATE_FORMAT(fc.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time, fc.active_flag");
 				}
 				FROM("demo_function_category fc");
 				LEFT_OUTER_JOIN("demo_function_category_dtls d ON fc.demo_function_category_dtls_id = d.demo_function_category_dtls_id");
@@ -215,10 +222,10 @@ public class FunctionProvider {
 			{
 				UPDATE("demo_function_category");
 				SET("pending_approval_status = 'DELETE'");
-				SET("pending_approval_dtls_id = #{functionDtlsId}");
+				SET("pending_approval_dtls_id = #{funcCatDtlsId}");
 				SET("updated_time = NOW()");
 				SET("updated_by = #{userId}");
-				WHERE("demo_function_category_id = #{functionId} ");
+				WHERE("demo_function_category_id = #{funcCatId} ");
 			}
 		}.toString();
 		log.info(s);
@@ -228,7 +235,7 @@ public class FunctionProvider {
 	public String getCatMstIdFromPendAppDtlId(Long id) {
 		String s = new SQL() {
 			{
-				SELECT("demo_function_category_dtls_id");
+				SELECT("demo_function_category_id");
 				FROM("demo_function_category");
 				WHERE("pending_approval_dtls_id = #{id}");
 			}
