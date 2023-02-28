@@ -10,6 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GroupFunctionVO {
 	
+	public Long grpFuncId;
+	
+	public Long grpFuncDtlsId;
+	
+	public Long grpFuncDtlsRecId;
+	
 	public Long groupId;
 	
 	public List<Long> functionIds;
@@ -17,4 +23,6 @@ public class GroupFunctionVO {
 	public Long functionId;
 	
 	public String status;
+	
+	public Long userId;
 }

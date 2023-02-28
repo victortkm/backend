@@ -16,7 +16,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GroupFunctionDTO {
 	
-	public Long groupFunctionId;
+	public Long grpFuncId;
+	
+	public Long grpFuncDtlsId;
+	
+	public Long grpFuncDtlsRecId;
 
 	public Long groupId;
 
@@ -26,12 +30,36 @@ public class GroupFunctionDTO {
 	
 	public String status;
 	
+	public String pendAppStatus;
+	
+	public String pendAppDtlId;
+	
+	public Long userId;
+	
+	private Integer pageNumber;
+	
+	private Integer pageSize;
+	
+	private Integer offset;
+	
+	private String sortKey;
+	
+	private boolean isTotalCount;
+	
+	public String createdTime;
+	
+	public String updatedTime;
+	
 	public static GroupFunctionDTO buildFromVo(GroupFunctionVO vo) {
 		GroupFunctionDTO dto = GroupFunctionDTO.builder()
+				.grpFuncId(vo.getGrpFuncId())
+				.grpFuncDtlsId(vo.getGrpFuncDtlsId())
+				.grpFuncDtlsRecId(vo.getGrpFuncDtlsRecId())
 				.groupId(vo.getGroupId())
 				.functionId(vo.getFunctionId())
 				.functionIds(vo.getFunctionIds())
 				.status(vo.getStatus())
+				.userId(vo.getUserId())
 				.build();
 		return dto;
 	}

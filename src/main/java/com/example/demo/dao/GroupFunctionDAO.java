@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.mapper.GroupFunctionMapper;
 import com.example.demo.dto.GroupFunctionDTO;
+import com.example.demo.dto.WorkflowDTO;
 
 @Repository
 public class GroupFunctionDAO {
@@ -15,44 +16,32 @@ public class GroupFunctionDAO {
 	@Autowired
 	GroupFunctionMapper demoMapper;
 	
-//	public FunctionDTO getFunctionDetails(Long id) {
-//		return demoMapper.getFunctionDetails(id);
-//	}
-//	
-//	public List<HashMap<String, Object>> getFunctionList(Long groupId) {
-//		return demoMapper.getFunctionList(groupId);
-//	}
-//	
-//	public int insertFunctionDtls(FunctionDTO dto) {
-//		return demoMapper.insertFunctionDtls(dto);
-//	}
-//	
-//	public int insertFunction(FunctionDTO dto) {
-//		return demoMapper.insertFunction(dto);
-//	}
-//	
-//	public List<HashMap<String, Object>> getFunctionCategoryList() {
-//		return demoMapper.getFunctionCategoryList();
-//	}
-//	
-//	public int updateFunctionCategory(FunctionCategoryDTO dto) {
-//		return demoMapper.updateFunctionCategory(dto);
-//	}
-//	
-//	public int insertFunctionCategory(FunctionCategoryDTO dto) {
-//		return demoMapper.insertFunctionCategory(dto);
-//	}
-//	
+	public GroupFunctionDTO getGroupFunctionDetailsFromGroupFunctionId(Long groupId) {
+		return demoMapper.getGroupFunctionDetailsFromGroupFunctionId(groupId);
+	}
+	
+	public List<HashMap<String, Object>> getGroupFunctionListFromGroupId(Long groupId) {
+		return demoMapper.getGroupFunctionListFromGroupId(groupId);
+	}
+	
+	public int insertGroupFunctionDtls(GroupFunctionDTO dto) {
+		return demoMapper.insertGroupFunctionDtls(dto);
+	}
+	
+	public int insertGroupFunctionDtlsRecord(GroupFunctionDTO dto) {
+		return demoMapper.insertGroupFunctionDtlsRecord(dto);
+	}
+	
 	public int insertGroupFunction(GroupFunctionDTO dto) {
 		return demoMapper.insertGroupFunction(dto);
 	}
 	
-//	public List<Long> getGroupFunctionListByGroupId(Long id) {
-//		return demoMapper.getGroupFunctionListByGroupId(id);
-//	}
-//	
-//	public int updateGroupFunction(GroupFunctionDTO dto) {
-//		return demoMapper.updateGroupFunction(dto);
-//	}
+	public Long getMstIdFromPendAppDtlId(Long id) {
+		return demoMapper.getMstIdFromPendAppDtlId(id);
+	}
+	
+	public int changeStatus(WorkflowDTO dto) {
+		return demoMapper.changeStatus(dto);
+	}
 	
 }
