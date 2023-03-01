@@ -134,6 +134,15 @@ public class FunctionResource {
 		
 		return boUtil;
 	}
+	
+	@RequestMapping(value = "/getFuncCatWithFuncList", method = RequestMethod.GET)
+	public BoUtil getFuncCatWithFuncList() {
+		
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.getFuncCatWithFuncList();
+		
+		return boUtil;
+	}
 
 	@RequestMapping(value = "/addFunctionCategory", method = RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
 	public BoUtil addFunctionCategory(@RequestBody FunctionCategoryVO vo) {

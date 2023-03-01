@@ -181,6 +181,19 @@ public class FunctionProvider {
 		return s;
 	}
 	
+	public String getFuncFromFuncCatId(Long id) {
+		String s = new SQL() {
+			{
+				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name");
+				FROM("demo_function f");
+				LEFT_OUTER_JOIN("demo_function_dtls d ON f.demo_function_dtls_id = d.demo_function_dtls_id");
+				WHERE("f.active_flag != '" + CommonConst.STATUS_INACTIVE + "' AND d.demo_function_category_id = " + id);
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+	
 	public String insertFunctionCategory(FunctionCategoryDTO dto) {
 		return new SQL() {
 			{

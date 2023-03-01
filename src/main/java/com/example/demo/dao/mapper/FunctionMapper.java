@@ -98,6 +98,17 @@ public interface FunctionMapper {
 	@SelectProvider(type = FunctionProvider.class, method = "getFunctionCategoryList")
 	List<HashMap<String, Object>> getFunctionCategoryList(FunctionCategoryDTO dto);
 	
+	@Results(value = {
+			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "functionDtlsId", column = "demo_function_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "functionName", column = "function_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "createdTime", column = "created_time", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			})
+	@SelectProvider(type = FunctionProvider.class, method = "getFuncFromFuncCatId")
+	List<HashMap<String, Object>> getFuncFromFuncCatId(Long id);
+	
 	@SelectProvider(type = FunctionProvider.class, method = "getFunctionCategoryList")
 	Integer getFunctionCategoryListTotalCount(FunctionCategoryDTO dto);
 

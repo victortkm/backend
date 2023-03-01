@@ -23,6 +23,8 @@ public interface FunctionService {
 	
 	public BoUtil getFunctionCategoryList(FunctionCategoryDTO dto);
 	
+	public BoUtil getFuncCatWithFuncList();
+	
 	public BoUtil insertCategoryFunction(FunctionCategoryVO vo);
 	
 	public BoUtil updateFunctionCategory(FunctionCategoryVO vo);

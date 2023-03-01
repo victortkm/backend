@@ -18,10 +18,9 @@ public class GroupFunctionProvider {
 	public String getGroupFunctionDetailsFromGroupFunctionId(Long id) {
 		String s = new SQL() {
 			{
-				SELECT("gf.demo_user_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gf.group_name gf.pending_approval_status, gf.pending_approval_dtls_id");
+				SELECT("gf.demo_group_function_id, gf.pending_approval_status, gf.pending_approval_dtls_id, d.demo_group_function_dtls_id, d.demo_group_id");
 				FROM("demo_group_function gf");
 				LEFT_OUTER_JOIN("demo_group_function_dtls d ON gf.demo_group_function_dtls_id = d.demo_group_function_dtls_id");
-				LEFT_OUTER_JOIN("demo_group_function_dtls_records r ON r.demo_group_dtls_id = d.demo_group_dtls_id");
 				WHERE("gf.active_flag != '" + CommonConst.STATUS_INACTIVE + "' AND gf.demo_group_function_id = " + id );
 			}
 		}.toString();
@@ -32,7 +31,7 @@ public class GroupFunctionProvider {
 	public String getGroupFunctionListFromGroupId(Long groupId) {
 		String s = new SQL() {
 			{
-				SELECT("r.demo_function_id, fd.function_name, fcd.function_category_name");
+				SELECT("r.demo_function_id");
 				FROM("demo_group_function gf");
 				LEFT_OUTER_JOIN("demo_group_function_dtls d ON gf.demo_group_function_dtls_id = d.demo_group_function_dtls_id");
 				LEFT_OUTER_JOIN("demo_group_function_dtls_records r ON r.demo_group_function_dtls_id = d.demo_group_function_dtls_id");
@@ -42,6 +41,19 @@ public class GroupFunctionProvider {
 				LEFT_OUTER_JOIN("demo_function_category_dtls fcd ON fcd.demo_function_category_dtls_id = fc.demo_function_category_dtls_id");
 				WHERE("gf.active_flag != '" + CommonConst.STATUS_INACTIVE + "' AND d.demo_group_id = " + groupId +
 						" AND d.active_flag != '" + CommonConst.STATUS_INACTIVE + "'");
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+	
+	public String getMstIdFromGroupId(Long id) {
+		String s = new SQL() {
+			{
+				SELECT("gf.demo_group_function_id");
+				FROM("demo_group_function gf");
+				LEFT_OUTER_JOIN("demo_group_function_dtls d ON gf.demo_group_function_dtls_id = d.demo_group_function_dtls_id");
+				WHERE("gf.active_flag != '" + CommonConst.STATUS_INACTIVE + "' AND d.demo_group_id = " + id );
 			}
 		}.toString();
 		log.info(s);
@@ -138,6 +150,20 @@ public class GroupFunctionProvider {
 				SET("updated_time = NOW()");
 				SET("updated_by = #{userId}");
 				SET("active_flag = #{recordStatus}");
+				WHERE("demo_group_function_id = #{mstId} ");
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+
+	public String deleteGrpFunc(Long mstId) {
+		String s = new SQL() {
+			{
+				UPDATE("demo_group_function");
+				SET("updated_time = NOW()");
+				SET("updated_by = 1");
+				SET("active_flag = 'n'");
 				WHERE("demo_group_function_id = #{mstId} ");
 			}
 		}.toString();

@@ -43,10 +43,12 @@ public class GroupFunctionServiceImpl implements GroupFunctionService {
 		
 		try {
 			
-			List<HashMap<String, Object>> list = dao.getGroupFunctionListFromGroupId(groupId);
+			List<Long> list = dao.getGroupFunctionListFromGroupId(groupId);
+			HashMap<String, Object> res = new HashMap<String,Object>();
+			res.put("functionIds", list);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
-			boUtil.setData(list);
+			boUtil.setData(res);
 			
 		} catch (Exception e) {
 			log.error(e.toString());
@@ -113,27 +115,31 @@ public class GroupFunctionServiceImpl implements GroupFunctionService {
 			
 //			query to get mst id
 			Long mstId = dao.getMstIdFromPendAppDtlId(vo.getDocId());
-			log.info("mst id: " + mstId + ", docid: " + vo.getDocId());
 			
 //			query to get change mode
-			String status = dao.getGroupFunctionDetailsFromGroupFunctionId(mstId).getPendAppStatus();
+			GroupFunctionDTO dtls = dao.getGroupFunctionDetailsFromGroupFunctionId(mstId);
+			String status = dtls.getPendAppStatus();
+			Long groupId = dtls.getGroupId();
+			
+			log.info("mst id: " + mstId + ", docid: " + vo.getDocId() + ", status: " + status);
 			
 //			update mst table
 			dto.setMstId(mstId);
 			
 			if(vo.getActionCode().equals(CommonConst.WORKFLOW_APPROVE)) {
-				if(status.equals(CommonConst.CHANGE_MODE_DELETE)) {
-					dto.setRecordStatus(CommonConst.STATUS_INACTIVE);
-				} else if(status.equals(CommonConst.CHANGE_MODE_EDIT)) {
+				if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
 					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
-				} else if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
-					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
+					
+					List<Long>mstList = dao.getMstIdFromGroupId(groupId);
+
+//					set current to inactive
+					for(Long mst: mstList) {
+						dao.deleteGrpFunc(mst);
+					}
 				}
 			} else {
 				if(status.equals(CommonConst.CHANGE_MODE_NEW)) {
 					dto.setRecordStatus(CommonConst.STATUS_INACTIVE);
-				} else {
-					dto.setRecordStatus(CommonConst.STATUS_ACTIVE);
 				}
 			}
 			

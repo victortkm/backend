@@ -20,8 +20,12 @@ public class GroupFunctionDAO {
 		return demoMapper.getGroupFunctionDetailsFromGroupFunctionId(groupId);
 	}
 	
-	public List<HashMap<String, Object>> getGroupFunctionListFromGroupId(Long groupId) {
+	public List<Long> getGroupFunctionListFromGroupId(Long groupId) {
 		return demoMapper.getGroupFunctionListFromGroupId(groupId);
+	}
+	
+	public List<Long> getMstIdFromGroupId(Long groupId) {
+		return demoMapper.getMstIdFromGroupId(groupId);
 	}
 	
 	public int insertGroupFunctionDtls(GroupFunctionDTO dto) {
@@ -42,6 +46,10 @@ public class GroupFunctionDAO {
 	
 	public int changeStatus(WorkflowDTO dto) {
 		return demoMapper.changeStatus(dto);
+	}
+	
+	public int deleteGrpFunc(Long mstId) {
+		return demoMapper.deleteGrpFunc(mstId);
 	}
 	
 }

@@ -23,13 +23,12 @@ import com.example.demo.dto.WorkflowDTO;
 public interface GroupFunctionMapper {
 
 	@Results(value = {
-			@Result(property = "userId", column = "demo_user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-			@Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "firstName", column = "first_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "lastName", column = "last_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-			@Result(property = "groupName", column = "group_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "grpFuncId", column = "demo_group_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "pendAppStatus", column = "pending_approval_status", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "pendAppDtlId", column = "pending_approval_dtls_id", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "grpFuncDtlsId", column = "demo_group_function_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "createdTime", column = "created_time", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
@@ -37,12 +36,16 @@ public interface GroupFunctionMapper {
 	GroupFunctionDTO getGroupFunctionDetailsFromGroupFunctionId(Long id);
 
 	@Results(value = {
-			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-			@Result(property = "functionName", column = "function_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "categoryName", column = "function_category_name", javaType = String.class, jdbcType = JdbcType.VARCHAR)
+			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT)
 			})
 	@SelectProvider(type = GroupFunctionProvider.class, method = "getGroupFunctionListFromGroupId")
-	List<HashMap<String, Object>> getGroupFunctionListFromGroupId(Long groupId);
+	List<Long> getGroupFunctionListFromGroupId(Long groupId);
+
+	@Results(value = {
+			@Result(property = "groupFunctionId", column = "demo_group_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT)
+			})
+	@SelectProvider(type = GroupFunctionProvider.class, method = "getMstIdFromGroupId")
+	List<Long> getMstIdFromGroupId(Long groupId);
 
 	@InsertProvider(type = GroupFunctionProvider.class, method = "insertGroupFunctionDtls")
 	@SelectKey(statement = { "SELECT LAST_INSERT_ID() AS grpFuncDtlsId" }, keyProperty = "grpFuncDtlsId", before = false, resultType = Long.class)
@@ -60,5 +63,8 @@ public interface GroupFunctionMapper {
 	
 	@UpdateProvider(type = GroupFunctionProvider.class, method = "changeStatus")
 	int changeStatus(WorkflowDTO dto);
+	
+	@UpdateProvider(type = GroupFunctionProvider.class, method = "deleteGrpFunc")
+	int deleteGrpFunc(Long mstId);
 	
 }

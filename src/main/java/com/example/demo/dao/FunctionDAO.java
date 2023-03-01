@@ -65,6 +65,10 @@ public class FunctionDAO {
 		return demoMapper.getFunctionCategoryList(dto);
 	}
 	
+	public List<HashMap<String, Object>> getFuncFromFuncCatId(Long id) {
+		return demoMapper.getFuncFromFuncCatId(id);
+	}
+	
 	public Integer getFunctionCategoryListTotalCount(FunctionCategoryDTO dto) {
 		return demoMapper.getFunctionCategoryListTotalCount(dto);
 	}

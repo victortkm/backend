@@ -261,6 +261,32 @@ public class FunctionServiceImpl implements FunctionService {
 		}
 		return boUtil;
 	}
+	
+	@Override
+	public BoUtil getFuncCatWithFuncList() {
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+			FunctionCategoryDTO dto = new FunctionCategoryDTO();
+			
+			List<HashMap<String, Object>> list = functionDAO.getFunctionCategoryList(dto);
+			
+			for(HashMap<String, Object> obj: list) {
+				Long funcCatId = (Long) obj.get("funcCatId");
+				log.info("funcCatId: " + funcCatId + ", obj: " + obj);
+				List<HashMap<String, Object>> funcList = functionDAO.getFuncFromFuncCatId(funcCatId);
+				obj.put("funcList", funcList);
+			}
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(list);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
 
 	@Override
 	public BoUtil insertCategoryFunction(FunctionCategoryVO catVo) {
