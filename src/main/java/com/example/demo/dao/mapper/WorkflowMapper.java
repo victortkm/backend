@@ -26,7 +26,7 @@ public interface WorkflowMapper {
 			@Result(property = "docType", column = "code", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "changeMode", column = "change_mode", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "keyValue", column = "key_value", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-			@Result(property = "updatedDate", column = "update_time", javaType = String.class, jdbcType = JdbcType.TIMESTAMP),
+			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.TIMESTAMP),
 			@Result(property = "createdBy", column = "updated_by", javaType = Long.class, jdbcType = JdbcType.BIGINT)})
 	List<HashMap<String, Object>> getApprovalListing();
 	

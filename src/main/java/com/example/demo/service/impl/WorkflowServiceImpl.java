@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.constant.CommonConst;
 import com.example.demo.dao.WorkflowDAO;
+import com.example.demo.dto.ListResDTO;
 import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.WorkflowService;
 import com.example.demo.util.BoUtil;
@@ -28,9 +29,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 			BoUtil boUtil = BoUtil.getDefaultFalseBo();
 
 			List<HashMap<String, Object>> list = demoDAO.getApprovalListing();
+			ListResDTO res = new ListResDTO();
+			res.setList(list);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
-			boUtil.setData(list);
+			boUtil.setData(res);
 			return boUtil;
 
 		} catch (Exception e) {
