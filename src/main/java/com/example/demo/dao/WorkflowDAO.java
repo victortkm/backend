@@ -15,8 +15,12 @@ public class WorkflowDAO {
 	@Autowired
 	WorkflowMapper demoMapper;
 	
-	public List<HashMap<String, Object>> getApprovalListing() {
-		return demoMapper.getApprovalListing();
+	public List<HashMap<String, Object>> getApprovalListing(WorkflowDTO dto) {
+		return demoMapper.getApprovalListing(dto);
+	}
+	
+	public Integer getApprovalListingTotalCount(WorkflowDTO dto) {
+		return demoMapper.getApprovalListingTotalCount(dto);
 	}
 	
 	public Long getDocIdFromJobId(Long id) {

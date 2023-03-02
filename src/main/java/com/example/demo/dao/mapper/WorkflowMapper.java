@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
@@ -28,7 +27,10 @@ public interface WorkflowMapper {
 			@Result(property = "keyValue", column = "key_value", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.TIMESTAMP),
 			@Result(property = "createdBy", column = "updated_by", javaType = Long.class, jdbcType = JdbcType.BIGINT)})
-	List<HashMap<String, Object>> getApprovalListing();
+	List<HashMap<String, Object>> getApprovalListing(WorkflowDTO dto);
+	
+	@SelectProvider(type = WorkflowProvider.class, method = "getApprovalListing")
+	Integer getApprovalListingTotalCount(WorkflowDTO dto);
 	
 	@SelectProvider(type = WorkflowProvider.class, method = "getDocIdFromJobId")
 	Long getDocIdFromJobId(Long id);

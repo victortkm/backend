@@ -22,6 +22,16 @@ public class WorkflowDTO {
 	private String recordStatus;
 	private String actionCode;
 	private Long mstId;
+
+	private Integer pageNumber;
+	
+	private Integer pageSize;
+	
+	private Integer offset;
+	
+	private String sortKey;
+	
+	private boolean isTotalCount;
 	
 	public static WorkflowDTO buildFromVo(WorkflowVO vo) {
 		WorkflowDTO dto = WorkflowDTO.builder()

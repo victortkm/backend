@@ -1,7 +1,7 @@
 package com.example.demo.dao.sql;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
-import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkflowDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -9,13 +9,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WorkflowProvider {
 	
-	public String getApprovalListing() {
+	public String getApprovalListing(WorkflowDTO dto) {
 		String s = new SQL() {
 			{
-				SELECT("j.job_id, j.doc_id, t.code, j.change_mode, j.key_value, j.updated_by, j.updated_time");
+				if(dto.isTotalCount()) {
+					SELECT("COUNT(*)");
+				} else {
+					SELECT("j.job_id, j.doc_id, t.code, j.change_mode, j.key_value, j.updated_by, j.updated_time");
+				}
 				FROM("wfl_job_hdr j");
 				LEFT_OUTER_JOIN("wfl_type_hdr t ON j.type_id = t.type_id");
 				WHERE("j.active_flag = 'y'");
+				
+				/* MUST PUT ON LAST */
+				if(!dto.isTotalCount()) {
+					if (dto.getPageSize() != null && dto.getPageSize() > 0) {
+						if(StringUtils.isNoneBlank(dto.getSortKey())) {
+							ORDER_BY( dto.getSortKey().replaceAll(":", " ") + " LIMIT #{offset},#{pageSize}");	
+						} else {
+							ORDER_BY(" j.updated_time DESC, j.created_time DESC LIMIT #{offset},#{pageSize}");
+						}
+					}
+				}
 			}
 		}.toString();
 		log.info(s);

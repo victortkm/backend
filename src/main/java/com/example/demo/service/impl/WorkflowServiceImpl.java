@@ -24,13 +24,18 @@ public class WorkflowServiceImpl implements WorkflowService {
 	WorkflowDAO demoDAO;
 
 	@Override
-	public BoUtil getApprovalListing() {
+	public BoUtil getApprovalListing(WorkflowDTO dto) {
 		try {
 			BoUtil boUtil = BoUtil.getDefaultFalseBo();
 
-			List<HashMap<String, Object>> list = demoDAO.getApprovalListing();
+			List<HashMap<String, Object>> list = demoDAO.getApprovalListing(dto);
 			ListResDTO res = new ListResDTO();
 			res.setList(list);
+			res.setPageNumber(dto.getPageNumber());
+			
+			dto.setTotalCount(true);
+			Integer totalCount = demoDAO.getApprovalListingTotalCount(dto);
+			res.setTotalCount(totalCount);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(res);

@@ -2,7 +2,6 @@ package com.example.demo.dto;
 
 import java.util.List;
 
-import com.example.demo.vo.FunctionVO;
 import com.example.demo.vo.GroupFunctionVO;
 
 import lombok.AllArgsConstructor;
