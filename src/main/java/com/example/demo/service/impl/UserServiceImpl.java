@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 		BoUtil boUtil = new BoUtil();
 		
 		try {	
-			UserDTO user = userDAO.getUserDetails(id);
+			UserDTO user = userDAO.getUserDetailsFromDtlsId(id);
 			log.info(user.toString());
 			
 			boUtil = BoUtil.getDefaultTrueBo();

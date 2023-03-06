@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import java.util.List;
+
 import com.example.demo.vo.GroupVO;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +20,8 @@ public class GroupDTO {
 	public Long groupId;
 	
 	public Long groupDtlsId;
+	
+	public List<Long> functionIds;
 	
 	public String groupName;
 	

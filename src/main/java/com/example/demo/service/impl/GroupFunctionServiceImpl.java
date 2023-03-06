@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.constant.CommonConst;
 import com.example.demo.dao.GroupFunctionDAO;
 import com.example.demo.dao.WorkflowDAO;
+import com.example.demo.dto.FunctionDTO;
 import com.example.demo.dto.GroupFunctionDTO;
 import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.GroupFunctionService;
@@ -31,6 +32,24 @@ public class GroupFunctionServiceImpl implements GroupFunctionService {
 
 	@Autowired
 	WorkflowDAO wflDAO;
+
+	@Override
+	public BoUtil getGroupFunctionDtls(Long id) {
+		BoUtil boUtil = new BoUtil();
+		
+		try {	
+			GroupFunctionDTO dto = dao.getGroupFunctionByDtlsId(id);
+			log.info(dto.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(dto);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
 	
 	@Override
 	public BoUtil getGroupFunctionListFromGroupId(Long groupId) {

@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GroupFunctionProvider {
 	
+//	UNUSED START
+	
 	public String getGroupFunctionDetailsFromGroupFunctionId(Long id) {
 		String s = new SQL() {
 			{
@@ -18,6 +20,19 @@ public class GroupFunctionProvider {
 				FROM("demo_group_function gf");
 				LEFT_OUTER_JOIN("demo_group_function_dtls d ON gf.demo_group_function_dtls_id = d.demo_group_function_dtls_id");
 				WHERE("gf.active_flag != '" + CommonConst.STATUS_INACTIVE + "' AND gf.demo_group_function_id = " + id );
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+	
+	public String getGroupFunctionByDtlsId(Long id) {
+		String s = new SQL() {
+			{
+				SELECT("gf.demo_group_function_id, gf.pending_approval_status, gf.pending_approval_dtls_id, d.demo_group_function_dtls_id, d.demo_group_id");
+				FROM("demo_group_function gf");
+				LEFT_OUTER_JOIN("demo_group_function_dtls d ON gf.demo_group_function_dtls_id = d.demo_group_function_dtls_id");
+				WHERE("gf.active_flag != '" + CommonConst.STATUS_INACTIVE + "' AND gf.pending_approval_status = " + id );
 			}
 		}.toString();
 		log.info(s);
@@ -74,7 +89,8 @@ public class GroupFunctionProvider {
 		String s = new SQL() {
 			{
 				INSERT_INTO("demo_group_function_dtls_records");
-				VALUES("demo_group_function_dtls_id", "#{grpFuncDtlsId}");
+//				VALUES("demo_group_function_dtls_id", "#{grpFuncDtlsId}");
+				VALUES("demo_group_dtls_id", "#{groupDtlsId}");
 				VALUES("demo_function_id", "#{functionId}");
 				VALUES("created_by", "#{userId}");
 				VALUES("updated_by", "#{userId}");
@@ -161,6 +177,20 @@ public class GroupFunctionProvider {
 				SET("updated_by = 1");
 				SET("active_flag = 'n'");
 				WHERE("demo_group_function_id = #{mstId} ");
+			}
+		}.toString();
+		log.info(s);
+		return s;
+	}
+	
+//	UNUSED END
+	
+	public String getGroupFunctionByGroupDtlsId(Long id) {
+		String s = new SQL() {
+			{
+				SELECT("gf.demo_function_id");
+				FROM("demo_group_function_dtls_records gf");
+				WHERE("gf.demo_group_dtls_id = " + id );
 			}
 		}.toString();
 		log.info(s);

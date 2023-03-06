@@ -9,6 +9,7 @@ import com.example.demo.vo.WorkflowVO;
 
 public interface FunctionService {
 	
+//	Function
 	public BoUtil getFunctionDetails(Long id);
 	
 	public BoUtil getFunctionList(FunctionDTO dto);
@@ -20,6 +21,9 @@ public interface FunctionService {
 	public BoUtil deleteFunction(FunctionVO vo);
 	
 	public BoUtil changeStatus(WorkflowVO vo);
+	
+//	Function Category
+	public BoUtil getFunctionCategoryDetails(Long id);
 	
 	public BoUtil getFunctionCategoryList(FunctionCategoryDTO dto);
 	

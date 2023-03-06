@@ -23,6 +23,8 @@ public class GroupFunctionDTO {
 
 	public Long groupId;
 
+	public Long groupDtlsId;
+
 	public Long functionId;
 	
 	public List<Long> functionIds;

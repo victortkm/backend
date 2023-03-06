@@ -20,6 +20,10 @@ public class UserDAO {
 		return demoMapper.getUserDetails(id);
 	}
 	
+	public UserDTO getUserDetailsFromDtlsId(Long id) {
+		return demoMapper.getUserDetailsFromDtlsId(id);
+	}
+	
 	public List<HashMap<String, Object>> getUserList(UserDTO dto) {
 		return demoMapper.getUserList(dto);
 	}

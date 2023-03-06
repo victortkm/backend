@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.constant.CommonConst;
 import com.example.demo.dao.GroupDAO;
+import com.example.demo.dao.GroupFunctionDAO;
 import com.example.demo.dao.WorkflowDAO;
 import com.example.demo.dto.GroupDTO;
+import com.example.demo.dto.GroupFunctionDTO;
 import com.example.demo.dto.ListResDTO;
 import com.example.demo.dto.WorkflowDTO;
 import com.example.demo.service.GroupService;
@@ -28,6 +30,9 @@ public class GroupServiceImpl implements GroupService {
 	GroupDAO groupDAO;
 
 	@Autowired
+	GroupFunctionDAO groupFunctionDAO;
+
+	@Autowired
 	WorkflowService wflService;
 	
 	@Autowired
@@ -38,8 +43,12 @@ public class GroupServiceImpl implements GroupService {
 		BoUtil boUtil = new BoUtil();
 		
 		try {	
-			GroupDTO Group = groupDAO.getGroupDetails(id);
+			GroupDTO Group = groupDAO.getGroupDetailsFromDtlsId(id);
 			log.info(Group.toString());
+			
+			List<Long> functionIds = groupFunctionDAO.getGroupFunctionByGroupDtlsId(id);
+			
+			Group.setFunctionIds(functionIds);
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(Group);
@@ -88,6 +97,16 @@ public class GroupServiceImpl implements GroupService {
 			groupDAO.insertGroup(dto);
 			log.info(dto.toString());
 			
+//			Insert Group Function
+			GroupFunctionDTO gfDto = new GroupFunctionDTO();
+			gfDto.setFunctionIds(GroupVo.getFunctionIds());
+			
+			for(Long funcId: gfDto.getFunctionIds()) {
+				gfDto.setFunctionId(funcId);
+				gfDto.setGroupDtlsId(dto.getGroupDtlsId());
+				groupFunctionDAO.insertGroupFunctionDtlsRecord(gfDto);
+			}
+			
 			// init workflow
 			WorkflowVO vo = new WorkflowVO();
 			vo.setDocId(dto.getGroupDtlsId());
@@ -118,6 +137,16 @@ public class GroupServiceImpl implements GroupService {
 			groupDAO.insertGroupDtls(dto);
 			groupDAO.updateGroup(dto);
 			log.info(dto.toString());
+			
+//			Insert Group Function
+			GroupFunctionDTO gfDto = new GroupFunctionDTO();
+			gfDto.setFunctionIds(groupVO.getFunctionIds());
+			
+			for(Long funcId: gfDto.getFunctionIds()) {
+				gfDto.setFunctionId(funcId);
+				gfDto.setGroupDtlsId(dto.getGroupDtlsId());
+				groupFunctionDAO.insertGroupFunctionDtlsRecord(gfDto);
+			}
 			
 			// init workflow
 			WorkflowVO vo = new WorkflowVO();

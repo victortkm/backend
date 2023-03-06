@@ -20,6 +20,10 @@ public class GroupDAO {
 		return demoMapper.getGroupDetails(id);
 	}
 	
+	public GroupDTO getGroupDetailsFromDtlsId(Long id) {
+		return demoMapper.getGroupDetailsFromDtlsId(id);
+	}
+	
 	public List<HashMap<String, Object>> getGroupList(GroupDTO dto) {
 		return demoMapper.getGroupList(dto);
 	}

@@ -19,6 +19,10 @@ public class GroupFunctionDAO {
 		return demoMapper.getGroupFunctionDetailsFromGroupFunctionId(groupId);
 	}
 	
+	public GroupFunctionDTO getGroupFunctionByDtlsId(Long id) {
+		return demoMapper.getGroupFunctionByDtlsId(id);
+	}
+	
 	public List<Long> getGroupFunctionListFromGroupId(Long groupId) {
 		return demoMapper.getGroupFunctionListFromGroupId(groupId);
 	}
@@ -49,6 +53,10 @@ public class GroupFunctionDAO {
 	
 	public int deleteGrpFunc(Long mstId) {
 		return demoMapper.deleteGrpFunc(mstId);
+	}
+	
+	public List<Long> getGroupFunctionByGroupDtlsId(Long groupId) {
+		return demoMapper.getGroupFunctionByGroupDtlsId(groupId);
 	}
 	
 }

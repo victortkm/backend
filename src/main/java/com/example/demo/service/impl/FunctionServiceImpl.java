@@ -42,7 +42,7 @@ public class FunctionServiceImpl implements FunctionService {
 		BoUtil boUtil = new BoUtil();
 		
 		try {	
-			FunctionDTO Function = functionDAO.getFunctionDetails(id);
+			FunctionDTO Function = functionDAO.getFunctionDetailsByDtlsId(id);
 			log.info(Function.toString());
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -234,6 +234,25 @@ public class FunctionServiceImpl implements FunctionService {
 	}
 	
 //	Function Category
+	
+	@Override
+	public BoUtil getFunctionCategoryDetails(Long id) {
+		BoUtil boUtil = new BoUtil();
+		
+		try {	
+			FunctionCategoryDTO fc = functionDAO.getFuncCatDtlsByDtlsId(id);
+			log.info(fc.toString());
+			
+			boUtil = BoUtil.getDefaultTrueBo();
+			boUtil.setData(fc);
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+	
 	@Override
 	public BoUtil getFunctionCategoryList(FunctionCategoryDTO dto) {
 		BoUtil boUtil = new BoUtil();

@@ -40,9 +40,27 @@ public interface UserMapper {
 			})
 	@SelectProvider(type = UserProvider.class, method = "getUserDetailsFromUserId")
 	UserDTO getUserDetails(Long id);
+	
+	@Results(value = {
+			@Result(property = "userId", column = "demo_user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "userDtlsId", column = "demo_user_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "pendAppStatus", column = "pending_approval_status", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "pendAppDtlId", column = "pending_approval_dtls_id", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "firstName", column = "first_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "lastName", column = "last_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "groupName", column = "group_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "createdTime", column = "created_time", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.VARCHAR)
+			})
+	@SelectProvider(type = UserProvider.class, method = "getUserDetailsFromDtlsId")
+	UserDTO getUserDetailsFromDtlsId(Long id);
 
 	@Results(value = {
 			@Result(property = "userId", column = "demo_user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "userDtlsId", column = "demo_user_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT), 
 			@Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "firstName", column = "first_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "lastName", column = "last_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),

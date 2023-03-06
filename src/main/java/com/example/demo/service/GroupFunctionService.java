@@ -6,6 +6,8 @@ import com.example.demo.vo.WorkflowVO;
 
 public interface GroupFunctionService {
 	
+	public BoUtil getGroupFunctionDtls(Long id);
+	
 	public BoUtil getGroupFunctionListFromGroupId(Long groupId);
 	
 	public BoUtil insertGroupFunction(GroupFunctionVO vo);

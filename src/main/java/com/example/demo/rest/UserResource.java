@@ -25,9 +25,9 @@ public class UserResource {
     UserService demoService;
     
 	@RequestMapping(value = "/getUserDetails", method = RequestMethod.GET)
-	public BoUtil getUserDetails(@RequestParam(value="userId", required=false) Long id) {
+	public BoUtil getUserDetails(@RequestParam(value="userDtlsId", required=false) Long id) {
 		BoUtil boUtil = new BoUtil();
-		log.info("----- getUserDetails user id:"+ id);
+		log.info("----- getUserDetails userDtlsId id:"+ id);
 		
 		boUtil = demoService.getUserDetails(id);
 		

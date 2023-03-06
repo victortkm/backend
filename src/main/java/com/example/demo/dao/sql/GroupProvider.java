@@ -31,6 +31,17 @@ public class GroupProvider {
 		}.toString();
 	}
 	
+	public String getGroupDetailsFromDtlsId(Long id) {
+		return new SQL() {
+			{
+				SELECT("g.demo_group_id, g.demo_group_dtls_id, d.group_name, g.pending_approval_status, g.pending_approval_dtls_id,  g.active_flag, DATE_FORMAT(g.created_time, '%Y-%m-%e %H:%i:%s') AS created_time, DATE_FORMAT(g.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time");
+				FROM("demo_group g");
+				LEFT_OUTER_JOIN("demo_group_dtls d ON g.demo_group_dtls_id = d.demo_group_dtls_id");
+				WHERE("g.demo_group_dtls_id = #{id}");
+			}
+		}.toString();
+	}
+	
 	public String getGroupList(GroupDTO dto) {
 		String s = new SQL() {
 			{
@@ -99,6 +110,7 @@ public class GroupProvider {
 			}
 		}.toString();
 		log.info(s);
+		log.info(dto.toString());
 		return s;
 	}
 

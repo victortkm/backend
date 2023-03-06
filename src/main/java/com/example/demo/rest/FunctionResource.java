@@ -27,10 +27,19 @@ public class FunctionResource {
     FunctionService demoService;
 	
 //    Function
+	
+	@RequestMapping(value = "/getFunctionDetails", method = RequestMethod.GET)
+	public BoUtil getFunctionDetails(@RequestParam(value="functionDtlsId", required=false) Long id) {
+		BoUtil boUtil = new BoUtil();
+		log.info("----- getFunctionDetails functionDtlsId id:"+ id);
+		
+		boUtil = demoService.getFunctionDetails(id);
+		
+		return boUtil;
+	}
     
 	@RequestMapping(value = "/getFunctionList", method = RequestMethod.GET)
-	public BoUtil getGroupList(
-//			@RequestParam(value="userId", required=false) Long groupId,
+	public BoUtil getFunctionList(
 			@RequestParam(required = false) String pageNumber, 
 			@RequestParam(required = false) String pageSize,
 			@RequestParam(required = false) String sortKey) {
@@ -98,6 +107,18 @@ public class FunctionResource {
 		boUtil = demoService.changeStatus(vo);
 		
 		log.info("----- changeStatus userVo:"+ vo);
+		
+		return boUtil;
+	}
+	
+//	 Function Category
+	
+	@RequestMapping(value = "/getFunctionCategoryDetails", method = RequestMethod.GET)
+	public BoUtil getFunctionCategoryDetails(@RequestParam(value="funcCatDtlsId", required=false) Long id) {
+		BoUtil boUtil = new BoUtil();
+		log.info("----- getFunctionDetails funcCatDtlsId id:"+ id);
+		
+		boUtil = demoService.getFunctionCategoryDetails(id);
 		
 		return boUtil;
 	}

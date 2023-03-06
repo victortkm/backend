@@ -22,8 +22,18 @@ public class GroupFunctionResource {
     @Autowired
     GroupFunctionService demoService;
 	
+	@RequestMapping(value = "/getGroupFunctionDtls", method = RequestMethod.GET)
+	public BoUtil getGroupFunctionDtls(@RequestParam(value="funcCatId", required=false) Long id) {
+		BoUtil boUtil = new BoUtil();
+		log.info("----- getGroupFunctionDtls dtls id:"+ id);
+		
+		boUtil = demoService.getGroupFunctionDtls(id);
+		
+		return boUtil;
+	}
+	
 	@RequestMapping(value = "/getGroupFunctionListFromGroupId", method = RequestMethod.GET)
-	public BoUtil getGroupList(@RequestParam(value="groupId", required=false) Long groupId) {
+	public BoUtil getGroupFunctionListFromGroupId(@RequestParam(value="groupId", required=false) Long groupId) {
 		BoUtil boUtil = new BoUtil();
 		boUtil = demoService.getGroupFunctionListFromGroupId(groupId);
 		
