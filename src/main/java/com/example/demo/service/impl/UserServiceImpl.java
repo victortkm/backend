@@ -34,11 +34,11 @@ public class UserServiceImpl implements UserService {
 	WorkflowDAO wflDAO;
 	
 	@Override
-	public BoUtil getUserDetails(Long id) {
+	public BoUtil getUserDetails(Long id, boolean isPend) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {	
-			UserDTO user = userDAO.getUserDetailsFromDtlsId(id);
+			UserDTO user = userDAO.getUserDetailsFromDtlsId(id, isPend);
 			log.info(user.toString());
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return boUtil;
 	}
-
+	
 	@Override
 	public BoUtil getUserList(UserDTO dto) {
 		BoUtil boUtil = new BoUtil();
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 			vo.setDocId(dto.getUserDtlsId());
 			vo.setDocNo(dto.getUserDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_USER_MAINTENANCE);
-			vo.setKeyValue(dto.getUserDtlsId().toString());
+			vo.setKeyValue(dto.getUserName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 			vo.setDocId(dto.getUserDtlsId());
 			vo.setDocNo(dto.getUserDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_USER_MAINTENANCE);
-			vo.setKeyValue(dto.getUserDtlsId().toString());
+			vo.setKeyValue(dto.getUserName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
 			wflService.init(vo);
@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
 			vo.setDocId(dtlId);
 			vo.setDocNo(dtlId.toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_USER_MAINTENANCE);
-			vo.setKeyValue(dtlId.toString());
+			vo.setKeyValue(dto.getUserName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
 			wflService.init(vo);

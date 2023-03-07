@@ -37,17 +37,25 @@ public class UserProvider {
 		return s;
 	}
 	
-	public String getUserDetailsFromDtlsId(Long id) {
+	public String getUserDetailsFromDtlsId(Long id, boolean isPend) {
 		String s = new SQL() {
 			{
 				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.pending_approval_status,"
 						+ "u.pending_approval_dtls_id, d.demo_group_id, u.active_flag, DATE_FORMAT(u.created_time, '%Y-%m-%e %H:%i:%s') AS created_time,"
 						+ "DATE_FORMAT(u.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time");
 				FROM("demo_user u");
-				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
+				if(isPend) {
+					LEFT_OUTER_JOIN("demo_user_dtls d ON u.pending_approval_dtls_id = d.demo_user_dtls_id");
+				} else {
+					LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
+				}
 				LEFT_OUTER_JOIN("demo_group g ON g.demo_group_id = d.demo_group_id");
 				LEFT_OUTER_JOIN("demo_group_dtls gd ON gd.demo_group_dtls_id = g.demo_group_dtls_id");
-				WHERE("u.demo_user_dtls_id = #{id}");
+				if(isPend) {
+					WHERE("u.pending_approval_dtls_id = #{id}");
+				} else {
+					WHERE("u.demo_user_dtls_id = #{id}");
+				}
 			}
 		}.toString();
 		log.info(s);

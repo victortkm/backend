@@ -56,7 +56,7 @@ public interface UserMapper {
 			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = UserProvider.class, method = "getUserDetailsFromDtlsId")
-	UserDTO getUserDetailsFromDtlsId(Long id);
+	UserDTO getUserDetailsFromDtlsId(Long id, boolean isPend);
 
 	@Results(value = {
 			@Result(property = "userId", column = "demo_user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),

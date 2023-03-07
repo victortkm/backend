@@ -7,7 +7,7 @@ import com.example.demo.vo.WorkflowVO;
 
 public interface UserService {
 	
-	public BoUtil getUserDetails(Long id);
+	public BoUtil getUserDetails(Long id, boolean isPend);
 	
 	public BoUtil getUserList(UserDTO dto);
 	

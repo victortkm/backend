@@ -20,8 +20,8 @@ public class UserDAO {
 		return demoMapper.getUserDetails(id);
 	}
 	
-	public UserDTO getUserDetailsFromDtlsId(Long id) {
-		return demoMapper.getUserDetailsFromDtlsId(id);
+	public UserDTO getUserDetailsFromDtlsId(Long id, boolean isPend) {
+		return demoMapper.getUserDetailsFromDtlsId(id, isPend);
 	}
 	
 	public List<HashMap<String, Object>> getUserList(UserDTO dto) {

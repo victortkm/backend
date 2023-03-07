@@ -25,11 +25,11 @@ public class UserResource {
     UserService demoService;
     
 	@RequestMapping(value = "/getUserDetails", method = RequestMethod.GET)
-	public BoUtil getUserDetails(@RequestParam(value="userDtlsId", required=false) Long id) {
+	public BoUtil getUserDetails(@RequestParam(value="userDtlsId", required=true) Long id, @RequestParam(value="isPend", required=false) boolean isPend) {
 		BoUtil boUtil = new BoUtil();
-		log.info("----- getUserDetails userDtlsId id:"+ id);
+		log.info("----- getUserDetails userDtlsId id:"+ id + " is pending:" + isPend);
 		
-		boUtil = demoService.getUserDetails(id);
+		boUtil = demoService.getUserDetails(id, isPend);
 		
 		return boUtil;
 	}
