@@ -10,7 +10,7 @@ import com.example.demo.vo.WorkflowVO;
 public interface FunctionService {
 	
 //	Function
-	public BoUtil getFunctionDetails(Long id);
+	public BoUtil getFunctionDetails(Long id, boolean isPend);
 	
 	public BoUtil getFunctionList(FunctionDTO dto);
 	
@@ -23,7 +23,7 @@ public interface FunctionService {
 	public BoUtil changeStatus(WorkflowVO vo);
 	
 //	Function Category
-	public BoUtil getFunctionCategoryDetails(Long id);
+	public BoUtil getFunctionCategoryDetails(Long id, boolean isPend);
 	
 	public BoUtil getFunctionCategoryList(FunctionCategoryDTO dto);
 	

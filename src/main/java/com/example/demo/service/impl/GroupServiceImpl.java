@@ -39,11 +39,11 @@ public class GroupServiceImpl implements GroupService {
 	WorkflowDAO wflDAO;
 
 	@Override
-	public BoUtil getGroupDetails(Long id) {
+	public BoUtil getGroupDetails(Long id, boolean isPend) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {	
-			GroupDTO Group = groupDAO.getGroupDetailsFromDtlsId(id);
+			GroupDTO Group = groupDAO.getGroupDetailsFromDtlsId(id, isPend);
 			log.info(Group.toString());
 			
 			List<Long> functionIds = groupFunctionDAO.getGroupFunctionByGroupDtlsId(id);

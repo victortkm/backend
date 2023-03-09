@@ -31,13 +31,18 @@ public class GroupProvider {
 		}.toString();
 	}
 	
-	public String getGroupDetailsFromDtlsId(Long id) {
+	public String getGroupDetailsFromDtlsId(Long id, boolean isPend) {
 		return new SQL() {
 			{
 				SELECT("g.demo_group_id, g.demo_group_dtls_id, d.group_name, g.pending_approval_status, g.pending_approval_dtls_id,  g.active_flag, DATE_FORMAT(g.created_time, '%Y-%m-%e %H:%i:%s') AS created_time, DATE_FORMAT(g.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time");
 				FROM("demo_group g");
-				LEFT_OUTER_JOIN("demo_group_dtls d ON g.demo_group_dtls_id = d.demo_group_dtls_id");
-				WHERE("g.demo_group_dtls_id = #{id}");
+				if(isPend) {
+					LEFT_OUTER_JOIN("demo_group_dtls d ON g.pending_approval_dtls_id = d.demo_group_dtls_id");
+					WHERE("g.pending_approval_dtls_id = #{id}");
+				} else {
+					LEFT_OUTER_JOIN("demo_group_dtls d ON g.demo_group_dtls_id = d.demo_group_dtls_id");
+					WHERE("g.demo_group_dtls_id = #{id}");
+				}
 			}
 		}.toString();
 	}

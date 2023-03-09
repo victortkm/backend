@@ -29,11 +29,11 @@ public class FunctionResource {
 //    Function
 	
 	@RequestMapping(value = "/getFunctionDetails", method = RequestMethod.GET)
-	public BoUtil getFunctionDetails(@RequestParam(value="functionDtlsId", required=false) Long id) {
+	public BoUtil getFunctionDetails(@RequestParam(value="functionDtlsId", required=false) Long id, @RequestParam(value="isPend", required=false) boolean isPend) {
 		BoUtil boUtil = new BoUtil();
-		log.info("----- getFunctionDetails functionDtlsId id:"+ id);
+		log.info("----- getFunctionDetails functionDtlsId id:"+ id + ", is pending:" + isPend);
 		
-		boUtil = demoService.getFunctionDetails(id);
+		boUtil = demoService.getFunctionDetails(id, isPend);
 		
 		return boUtil;
 	}
@@ -114,11 +114,11 @@ public class FunctionResource {
 //	 Function Category
 	
 	@RequestMapping(value = "/getFunctionCategoryDetails", method = RequestMethod.GET)
-	public BoUtil getFunctionCategoryDetails(@RequestParam(value="funcCatDtlsId", required=false) Long id) {
+	public BoUtil getFunctionCategoryDetails(@RequestParam(value="funcCatDtlsId", required=false) Long id, @RequestParam(value="isPend", required=false) boolean isPend) {
 		BoUtil boUtil = new BoUtil();
-		log.info("----- getFunctionDetails funcCatDtlsId id:"+ id);
+		log.info("----- getFunctionDetails funcCatDtlsId id:"+ id + ", isPend:" + isPend);
 		
-		boUtil = demoService.getFunctionCategoryDetails(id);
+		boUtil = demoService.getFunctionCategoryDetails(id, isPend);
 		
 		return boUtil;
 	}

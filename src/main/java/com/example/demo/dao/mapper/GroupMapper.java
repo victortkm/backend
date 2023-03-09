@@ -43,7 +43,7 @@ public interface GroupMapper {
 			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.VARCHAR)
 			})
 	@SelectProvider(type = GroupProvider.class, method = "getGroupDetailsFromDtlsId")
-	GroupDTO getGroupDetailsFromDtlsId(Long id);
+	GroupDTO getGroupDetailsFromDtlsId(Long id, boolean isPend);
 
 	@Results(value = {
 			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),

@@ -20,8 +20,8 @@ public class GroupDAO {
 		return demoMapper.getGroupDetails(id);
 	}
 	
-	public GroupDTO getGroupDetailsFromDtlsId(Long id) {
-		return demoMapper.getGroupDetailsFromDtlsId(id);
+	public GroupDTO getGroupDetailsFromDtlsId(Long id, boolean isPend) {
+		return demoMapper.getGroupDetailsFromDtlsId(id, isPend);
 	}
 	
 	public List<HashMap<String, Object>> getGroupList(GroupDTO dto) {

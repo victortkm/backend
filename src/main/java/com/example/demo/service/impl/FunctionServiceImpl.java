@@ -38,11 +38,11 @@ public class FunctionServiceImpl implements FunctionService {
 //	Function
 	
 	@Override
-	public BoUtil getFunctionDetails(Long id) {
+	public BoUtil getFunctionDetails(Long id, boolean isPend) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {	
-			FunctionDTO Function = functionDAO.getFunctionDetailsByDtlsId(id);
+			FunctionDTO Function = functionDAO.getFunctionDetailsByDtlsId(id, isPend);
 			log.info(Function.toString());
 			
 			boUtil = BoUtil.getDefaultTrueBo();
@@ -236,11 +236,11 @@ public class FunctionServiceImpl implements FunctionService {
 //	Function Category
 	
 	@Override
-	public BoUtil getFunctionCategoryDetails(Long id) {
+	public BoUtil getFunctionCategoryDetails(Long id, boolean isPend) {
 		BoUtil boUtil = new BoUtil();
 		
 		try {	
-			FunctionCategoryDTO fc = functionDAO.getFuncCatDtlsByDtlsId(id);
+			FunctionCategoryDTO fc = functionDAO.getFuncCatDtlsByDtlsId(id, isPend);
 			log.info(fc.toString());
 			
 			boUtil = BoUtil.getDefaultTrueBo();

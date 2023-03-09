@@ -48,7 +48,7 @@ public interface FunctionMapper {
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			})
 	@SelectProvider(type = FunctionProvider.class, method = "getFunctionDetailsByDtlsId")
-	FunctionDTO getFunctionDetailsByDtlsId(Long id);
+	FunctionDTO getFunctionDetailsByDtlsId(Long id, boolean isPend);
 
 	@Results(value = {
 			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
@@ -113,7 +113,7 @@ public interface FunctionMapper {
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			})
 	@SelectProvider(type = FunctionProvider.class, method = "getFuncCatDtlsByDtlsId")
-	FunctionCategoryDTO getFuncCatDtlsByDtlsId(Long id);
+	FunctionCategoryDTO getFuncCatDtlsByDtlsId(Long id, boolean isPend);
 	
 	@Results(value = {
 			@Result(property = "funcCatId", column = "demo_function_category_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),

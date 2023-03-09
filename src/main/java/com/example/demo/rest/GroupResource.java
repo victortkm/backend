@@ -25,11 +25,11 @@ public class GroupResource {
     GroupService demoService;
 	
 	@RequestMapping(value = "/getGroupDetails", method = RequestMethod.GET)
-	public BoUtil getGroupDetails(@RequestParam(value="groupDtlsId", required=false) Long id) {
+	public BoUtil getGroupDetails(@RequestParam(value="groupDtlsId", required=false) Long id, @RequestParam(value="isPend", required=false) boolean isPend) {
 		BoUtil boUtil = new BoUtil();
 		log.info("----- getGroupDetails groupDtlsId id:"+ id);
 		
-		boUtil = demoService.getGroupDetails(id);
+		boUtil = demoService.getGroupDetails(id, isPend);
 		
 		return boUtil;
 	}

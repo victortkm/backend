@@ -23,8 +23,8 @@ public class FunctionDAO {
 		return demoMapper.getFunctionDetails(id);
 	}
 	
-	public FunctionDTO getFunctionDetailsByDtlsId(Long id) {
-		return demoMapper.getFunctionDetailsByDtlsId(id);
+	public FunctionDTO getFunctionDetailsByDtlsId(Long id, boolean isPend) {
+		return demoMapper.getFunctionDetailsByDtlsId(id, isPend);
 	}
 	
 	public List<HashMap<String, Object>> getFunctionList(FunctionDTO dto) {
@@ -65,8 +65,8 @@ public class FunctionDAO {
 		return demoMapper.getFunctionCategoryDetails(id);
 	}
 	
-	public FunctionCategoryDTO getFuncCatDtlsByDtlsId(Long id) {
-		return demoMapper.getFuncCatDtlsByDtlsId(id);
+	public FunctionCategoryDTO getFuncCatDtlsByDtlsId(Long id, boolean isPend) {
+		return demoMapper.getFuncCatDtlsByDtlsId(id, isPend);
 	}
 	
 	public List<HashMap<String, Object>> getFunctionCategoryList(FunctionCategoryDTO dto) {

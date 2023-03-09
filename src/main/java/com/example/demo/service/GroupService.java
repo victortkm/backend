@@ -7,7 +7,7 @@ import com.example.demo.vo.WorkflowVO;
 
 public interface GroupService {
 	
-	public BoUtil getGroupDetails(Long id);
+	public BoUtil getGroupDetails(Long id, boolean isPend);
 	
 	public BoUtil getGroupList(GroupDTO dto);
 	
