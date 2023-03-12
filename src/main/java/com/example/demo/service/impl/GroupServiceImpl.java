@@ -117,6 +117,8 @@ public class GroupServiceImpl implements GroupService {
 			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
 			
+			dto.setFunctionIds(GroupVo.getFunctionIds());
+			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(dto);
 			
@@ -157,6 +159,8 @@ public class GroupServiceImpl implements GroupService {
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
 			wflService.init(vo);
+			
+			dto.setFunctionIds(groupVO.getFunctionIds());
 			
 			boUtil = BoUtil.getDefaultTrueBo();
 			boUtil.setData(dto);

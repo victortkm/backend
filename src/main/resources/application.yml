@@ -10,8 +10,8 @@ active-mq:
 spring.datasource:
     url: jdbc:mysql://localhost:3306/demo_schema?serverTimezone=UTC
     jdbc-url: jdbc:mysql://localhost:3306/demo_schema?serverTimezone=UTC
-    username: root
-    password: password
+    username: admin
+    password: admin
     
 filepath.config:
     inputPath: C:\\Users\\Beans\\Desktop\\report files\\workspace\\mob
