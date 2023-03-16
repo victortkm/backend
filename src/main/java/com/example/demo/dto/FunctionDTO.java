@@ -27,7 +27,9 @@ public class FunctionDTO {
 	
 	public String functionName;
 
-	public Long functionCatId;
+	public Long funcCatId;
+
+	public String functionCatName;
 	
 	public String status;
 
@@ -57,7 +59,7 @@ public class FunctionDTO {
 				.functionName(vo.getFunctionName())
 				.status(vo.getStatus())
 				.userId(vo.getUserId())
-				.functionCatId(vo.getFunctionCatId())
+				.funcCatId(vo.getFuncCatId())
 				.build();
 		return dto;
 	}

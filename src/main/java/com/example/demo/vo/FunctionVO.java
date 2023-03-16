@@ -18,7 +18,7 @@ public class FunctionVO {
 	
 	public String functionName;
 
-	public Long functionCatId;
+	public Long funcCatId;
 	
 	public String status;
 	

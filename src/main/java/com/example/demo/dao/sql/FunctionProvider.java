@@ -28,14 +28,18 @@ public class FunctionProvider {
 	public String getFunctionDetailsByDtlsId(Long id, boolean isPend) {
 		String s = new SQL() {
 			{
-				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, f.pending_approval_status, f.pending_approval_dtls_id, f.active_flag,"
+				SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, cd.function_category_name, c.demo_function_category_id, f.pending_approval_status, f.pending_approval_dtls_id, f.active_flag,"
 						+ "DATE_FORMAT(f.created_time, '%Y-%m-%e %H:%i:%s') AS created_time, DATE_FORMAT(f.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time, f.active_flag");
 				FROM("demo_function f");
 				if(isPend) {
 					LEFT_OUTER_JOIN("demo_function_dtls d ON f.pending_approval_dtls_id = d.demo_function_dtls_id");
+					LEFT_OUTER_JOIN("demo_function_category c ON c.demo_function_category_id = d.demo_function_category_id");
+					LEFT_OUTER_JOIN("demo_function_category_dtls cd ON c.demo_function_category_dtls_id = cd.demo_function_category_dtls_id");
 					WHERE("f.pending_approval_dtls_id = #{id}");
 				} else {
 					LEFT_OUTER_JOIN("demo_function_dtls d ON f.demo_function_dtls_id = d.demo_function_dtls_id");
+					LEFT_OUTER_JOIN("demo_function_category c ON c.demo_function_category_id = d.demo_function_category_id");
+					LEFT_OUTER_JOIN("demo_function_category_dtls cd ON c.demo_function_category_dtls_id = cd.demo_function_category_dtls_id");
 					WHERE("f.demo_function_dtls_id = #{id}");
 				}
 			}
@@ -50,11 +54,13 @@ public class FunctionProvider {
 				if(dto.isTotalCount()) {
 					SELECT("COUNT(*)");
 				} else {
-					SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, DATE_FORMAT(f.created_time, '%Y-%m-%e %H:%i:%s') AS created_time,"
+					SELECT("f.demo_function_id, f.demo_function_dtls_id, d.function_name, cd.function_category_name, DATE_FORMAT(f.created_time, '%Y-%m-%e %H:%i:%s') AS created_time,"
 							+ "DATE_FORMAT(f.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time, f.active_flag");
 				}
 				FROM("demo_function f");
 				LEFT_OUTER_JOIN("demo_function_dtls d ON f.demo_function_dtls_id = d.demo_function_dtls_id");
+				LEFT_OUTER_JOIN("demo_function_category c ON c.demo_function_category_id = d.demo_function_category_id");
+				LEFT_OUTER_JOIN("demo_function_category_dtls cd ON c.demo_function_category_dtls_id = cd.demo_function_category_dtls_id");
 				WHERE("f.active_flag != '" + CommonConst.STATUS_INACTIVE + "'");
 
 				/* MUST PUT ON LAST */
@@ -78,7 +84,7 @@ public class FunctionProvider {
 			{
 				INSERT_INTO("demo_function_dtls");
 				VALUES("function_name", "#{functionName}");
-				VALUES("demo_function_category_id", "#{functionCatId}");
+				VALUES("demo_function_category_id", "#{funcCatId}");
 			}
 		}.toString();
 	}

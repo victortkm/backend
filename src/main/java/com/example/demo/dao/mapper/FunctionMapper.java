@@ -37,9 +37,11 @@ public interface FunctionMapper {
 	FunctionDTO getFunctionDetails(Long id);
 
 	@Results(value = {
-			@Result(property = "functionId", column = "function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "functionDtlsId", column = "demo_function_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "functionName", column = "function_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "funcCatId", column = "demo_function_category_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "functionCatName", column = "function_category_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "pendAppStatus", column = "pending_approval_status", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "pendAppDtlId", column = "pending_approval_dtls_id", javaType = String.class, jdbcType = JdbcType.VARCHAR),
@@ -54,6 +56,7 @@ public interface FunctionMapper {
 			@Result(property = "functionId", column = "demo_function_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "functionDtlsId", column = "demo_function_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
 			@Result(property = "functionName", column = "function_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Result(property = "categoryName", column = "function_category_name", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "status", column = "active_flag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "createdTime", column = "created_time", javaType = String.class, jdbcType = JdbcType.VARCHAR),
 			@Result(property = "updatedTime", column = "updated_time", javaType = String.class, jdbcType = JdbcType.VARCHAR),
