@@ -63,6 +63,16 @@ public class FunctionProvider {
 				LEFT_OUTER_JOIN("demo_function_category_dtls cd ON c.demo_function_category_dtls_id = cd.demo_function_category_dtls_id");
 				WHERE("f.active_flag != '" + CommonConst.STATUS_INACTIVE + "'");
 
+				if (StringUtils.isNotBlank(dto.getFunctionName())) {
+					AND();
+					WHERE("d.function_name LIKE CONCAT('%', #{functionName}, '%') ");
+				}
+
+				if (dto.getFuncCatId() != null) {
+					AND();
+					WHERE("c.demo_function_category_id LIKE CONCAT('%', #{funcCatId}, '%') ");
+				}
+				
 				/* MUST PUT ON LAST */
 				if(!dto.isTotalCount()) {
 					if (dto.getPageSize() != null && dto.getPageSize() > 0) {

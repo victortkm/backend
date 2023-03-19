@@ -40,6 +40,8 @@ public class FunctionResource {
     
 	@RequestMapping(value = "/getFunctionList", method = RequestMethod.GET)
 	public BoUtil getFunctionList(
+			@RequestParam(required = false) Long funcCatId,
+			@RequestParam(required = false) String functionName, 
 			@RequestParam(required = false) String pageNumber, 
 			@RequestParam(required = false) String pageSize,
 			@RequestParam(required = false) String sortKey) {
@@ -60,6 +62,8 @@ public class FunctionResource {
 		}
 		int offset = (nPage - 1) * nPageSize;
 		FunctionDTO dto = new FunctionDTO();
+		dto.setFunctionName(functionName);
+		dto.setFuncCatId(funcCatId);
 		dto.setPageNumber(nPage);
 		dto.setPageSize(nPageSize);
 		dto.setOffset(offset);
