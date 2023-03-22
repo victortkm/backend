@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.constant.CommonConst;
+import com.example.demo.dao.GroupFunctionDAO;
 import com.example.demo.dao.UserDAO;
 import com.example.demo.dao.WorkflowDAO;
 import com.example.demo.dto.ListResDTO;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	WorkflowDAO wflDAO;
+	
+	@Autowired
+	GroupFunctionDAO groupFunctionDAO;
 	
 	@Override
 	public BoUtil getUserDetails(Long id, boolean isPend) {
@@ -219,6 +223,48 @@ public class UserServiceImpl implements UserService {
 			log.info(dto.toString());
 			
 			boUtil = BoUtil.getDefaultTrueBo();
+			
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+		return boUtil;
+	}
+	
+	@Override
+	public BoUtil login(UserVO vo) {
+		BoUtil boUtil = new BoUtil();
+		
+		try {
+			UserDTO dto = UserDTO.buildFromVo(vo);
+			UserDTO loginObj = userDAO.login(dto);
+			
+			
+			if(loginObj != null) {
+				Long userId = loginObj.getUserId();
+				Long groupId = loginObj.getGroupId();
+				Long groupDtlsId = loginObj.getGroupDtlsId();
+				
+				HashMap<String,Object> res = new HashMap<String,Object>();
+				res.put("userId", userId);
+				res.put("groupId", groupId);
+				res.put("groupDtlsId", groupDtlsId);
+				
+				log.info("User ID: " + userId + ", Group ID: " + groupId + ", Group dtls ID: " + groupDtlsId);
+				
+				if(groupId != null && groupId != 0l) {
+
+					List<Long> functionIds = groupFunctionDAO.getGroupFunctionByGroupDtlsId(groupDtlsId);
+					
+					res.put("functionIds", functionIds);
+				}
+				
+				boUtil = BoUtil.getDefaultTrueBo();
+				boUtil.setData(res);
+			} else {
+				boUtil.setMsg("Invalid username or password");
+				return boUtil;
+			}
 			
 		} catch (Exception e) {
 			log.error(e.toString());

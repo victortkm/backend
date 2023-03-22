@@ -55,4 +55,8 @@ public class UserDAO {
 	public int changeStatus(WorkflowDTO dto) {
 		return demoMapper.changeStatus(dto);
 	}
+	
+	public UserDTO login(UserDTO dto) {
+		return demoMapper.login(dto);
+	}
 }

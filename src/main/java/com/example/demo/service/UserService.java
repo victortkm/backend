@@ -18,4 +18,6 @@ public interface UserService {
 	public BoUtil deleteUser(UserVO userVo);
 	
 	public BoUtil changeStatus(WorkflowVO vo);
+	
+	public BoUtil login(UserVO userVo);
 }

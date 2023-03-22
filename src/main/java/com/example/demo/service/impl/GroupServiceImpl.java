@@ -112,7 +112,7 @@ public class GroupServiceImpl implements GroupService {
 			vo.setDocId(dto.getGroupDtlsId());
 			vo.setDocNo(dto.getGroupDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
-			vo.setKeyValue(dto.getGroupDtlsId().toString());
+			vo.setKeyValue(dto.getGroupName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
@@ -155,7 +155,7 @@ public class GroupServiceImpl implements GroupService {
 			vo.setDocId(dto.getGroupDtlsId());
 			vo.setDocNo(dto.getGroupDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
-			vo.setKeyValue(dto.getGroupDtlsId().toString());
+			vo.setKeyValue(dto.getGroupName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
 			wflService.init(vo);
@@ -191,7 +191,7 @@ public class GroupServiceImpl implements GroupService {
 			vo.setDocId(dtlId);
 			vo.setDocNo(dtlId.toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_GROUP_MAINTENANCE);
-			vo.setKeyValue(dtlId.toString());
+			vo.setKeyValue(dto.getGroupName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
 			wflService.init(vo);

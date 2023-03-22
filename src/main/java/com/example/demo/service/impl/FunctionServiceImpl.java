@@ -96,7 +96,7 @@ public class FunctionServiceImpl implements FunctionService {
 			vo.setDocId(dto.getFunctionDtlsId());
 			vo.setDocNo(dto.getFunctionDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
-			vo.setKeyValue(dto.getFunctionDtlsId().toString());
+			vo.setKeyValue(dto.getFunctionName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
@@ -127,7 +127,7 @@ public class FunctionServiceImpl implements FunctionService {
 			vo.setDocId(dto.getFunctionDtlsId());
 			vo.setDocNo(dto.getFunctionDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
-			vo.setKeyValue(dto.getFunctionDtlsId().toString());
+			vo.setKeyValue(dto.getFunctionName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
 			wflService.init(vo);
@@ -161,7 +161,7 @@ public class FunctionServiceImpl implements FunctionService {
 			vo.setDocId(dtlId);
 			vo.setDocNo(dtlId.toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_MAINTENANCE);
-			vo.setKeyValue(dtlId.toString());
+			vo.setKeyValue(dto.getFunctionName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
 			wflService.init(vo);
@@ -320,7 +320,7 @@ public class FunctionServiceImpl implements FunctionService {
 			vo.setDocId(dto.getFuncCatDtlsId());
 			vo.setDocNo(dto.getFuncCatDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_CATEGORY_MAINTENANCE);
-			vo.setKeyValue(dto.getFuncCatDtlsId().toString());
+			vo.setKeyValue(dto.getCategoryName());
 			vo.setUserId(dto.getUserId());
 			vo.setChangeMode(CommonConst.CHANGE_MODE_NEW);
 			wflService.init(vo);
@@ -351,7 +351,7 @@ public class FunctionServiceImpl implements FunctionService {
 			vo.setDocId(dto.getFuncCatDtlsId());
 			vo.setDocNo(dto.getFuncCatDtlsId().toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_CATEGORY_MAINTENANCE);
-			vo.setKeyValue(dto.getFuncCatDtlsId().toString());
+			vo.setKeyValue(dto.getCategoryName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_EDIT);
 			wflService.init(vo);
@@ -385,7 +385,7 @@ public class FunctionServiceImpl implements FunctionService {
 			vo.setDocId(dtlId);
 			vo.setDocNo(dtlId.toString());
 			vo.setTypeId(CommonConst.WFL_TYPE_ID_FUNCTION_CATEGORY_MAINTENANCE);
-			vo.setKeyValue(dtlId.toString());
+			vo.setKeyValue(dto.getCategoryName());
 			vo.setUserId(1l);
 			vo.setChangeMode(CommonConst.CHANGE_MODE_DELETE);
 			wflService.init(vo);

@@ -96,4 +96,12 @@ public interface UserMapper {
 	@UpdateProvider(type = UserProvider.class, method = "changeStatus")
 	int changeStatus(WorkflowDTO dto);
 
+	@SelectProvider(type = UserProvider.class, method = "login")
+	@Results(value = {
+			@Result(property = "userId", column = "demo_user_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "groupId", column = "demo_group_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			@Result(property = "groupDtlsId", column = "demo_group_dtls_id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+			})
+	UserDTO login(UserDTO dto);
+
 }

@@ -120,6 +120,7 @@ public class UserProvider {
 				VALUES("user_name", "#{userName}");
 				VALUES("first_name", "#{firstName}");
 				VALUES("last_name", "#{lastName}");
+				VALUES("password", "#{password}");
 				VALUES("demo_group_id", "#{groupId}");
 				VALUES("active_flag", "'y'");
 			}
@@ -197,5 +198,17 @@ public class UserProvider {
 		}.toString();
 		log.info(s);
 		return s;
+	}
+	
+	public String login(UserDTO dto) {
+		return new SQL() {
+			{
+				SELECT("u.demo_user_id, d.demo_group_id, g.demo_group_dtls_id");
+				FROM("demo_user u");
+				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
+				LEFT_OUTER_JOIN("demo_group g ON d.demo_group_id = g.demo_group_id");
+				WHERE("user_name = #{userName} AND password = #{password}");
+			}
+		}.toString();
 	}
 }

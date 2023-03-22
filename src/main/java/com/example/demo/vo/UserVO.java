@@ -16,6 +16,8 @@ public class UserVO {
 	
 	public String lastName;
 	
+	public String password;
+	
 	public Long groupId;
 	
 	public Long userIdFrom;

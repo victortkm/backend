@@ -116,5 +116,15 @@ public class UserResource {
 		
 		return boUtil;
 	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8")
+	public BoUtil login(@RequestBody UserVO userVo) {
+		BoUtil boUtil = new BoUtil();
+		boUtil = demoService.login(userVo);
+		
+		log.info("----- login userVo:"+ userVo);
+		
+		return boUtil;
+	}
 	
 }

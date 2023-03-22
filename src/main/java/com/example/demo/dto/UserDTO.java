@@ -23,7 +23,11 @@ public class UserDTO {
 	
 	public String lastName;
 	
+	public String password;
+	
 	public Long groupId;
+	
+	public Long groupDtlsId;
 	
 	public String groupName;
 	
@@ -55,6 +59,7 @@ public class UserDTO {
 				.userName(vo.getUserName())
 				.firstName(vo.getFirstName())
 				.lastName(vo.getLastName())
+				.password(vo.getPassword())
 				.groupId(vo.getGroupId())
 				.userIdFrom(vo.getUserIdFrom())
 				.build();
