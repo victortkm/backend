@@ -146,7 +146,7 @@ public class BIRTReportRunner implements ReportRunner {
 		}
 
 		// process any additional parameters
-		Map<String, String> parsedParameters = new HashMap<String, String>(); 
+		Map<String, String> parsedParameters = parseParametersAsMap(birtReport.getParameters());
 		
 		byteArrayOutputStream = new ByteArrayOutputStream();
 		IRenderTask renderTask = null;
@@ -273,7 +273,7 @@ public class BIRTReportRunner implements ReportRunner {
 			paramArray = noQuestionMark.split("&");
 			for (String param : paramArray) {
 				String[] paramGroup = param.split("=");
-				if (paramGroup.length == 2) {
+				if (paramGroup.length == 2 && paramGroup[1] != null) {
 					parsedParameters.put(paramGroup[0], paramGroup[1]);
 				} else {
 					parsedParameters.put(paramGroup[0], "");

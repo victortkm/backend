@@ -30,7 +30,7 @@ public class ReportServiceImpl implements ReportService {
 	private DemoApplication.FilePathConfig config;
 
 	@Override
-	public void downloadUserReport(String brn, OutputStream fos) {
+	public void downloadUserReport(String userName, String firstName, String lastName, Long groupId, OutputStream fos) {
 
 		byte[] reportBytes;
 		ResponseEntity<byte[]> responseEntity;
@@ -48,17 +48,49 @@ public class ReportServiceImpl implements ReportService {
 		try {
 			ReportRequestVO reportRequest = new ReportRequestVO();
 			reportRequest.setReportName(name);
-			reportRequest.setReportParameters("?bizRegNo=" + brn);
+			reportRequest.setReportParameters("?userName=" + userName + "&firstName=" + firstName + "&lastName=" + lastName + "&groupId=" + groupId);
 			reportRequest.setExportType("pdf");
-
-			reportBytes = new BIRTReport(reportRequest.getReportName(), "",
+			reportBytes = new BIRTReport(reportRequest.getReportName(), reportRequest.getReportParameters(),
 					reportRunner, reportRequest.getExportType()).runReport().getReportContent().toByteArray();
 
 			fos.write(reportBytes);
 			log.info("### File size generated: " + reportBytes.length + "bytes");
 			fos.close();
 
-		} catch (Exception e) {
+		} catch (Exception e) { 
+			responseEntity = new ResponseEntity<byte[]>(HttpStatus.NOT_IMPLEMENTED);
+		}
+	}
+
+	@Override
+	public void downloadGroupReport(String groupName, OutputStream fos) {
+
+		byte[] reportBytes;
+		ResponseEntity<byte[]> responseEntity;
+		String inputDir = config.getInputPath() + File.separator + "demo_group_report.rptdesign";
+		log.info("Template path: " + inputDir);
+		File folder = new File(inputDir);
+		log.info("Template file absolute path: " + folder.getAbsolutePath());
+		if (!folder.exists()) {
+			log.info("template not found ");
+			return;
+		}
+
+		String name = org.springframework.util.StringUtils.stripFilenameExtension(folder.getName());
+
+		try {
+			ReportRequestVO reportRequest = new ReportRequestVO();
+			reportRequest.setReportName(name);
+			reportRequest.setReportParameters("?groupName=" + groupName);
+			reportRequest.setExportType("pdf");
+			reportBytes = new BIRTReport(reportRequest.getReportName(), reportRequest.getReportParameters(),
+					reportRunner, reportRequest.getExportType()).runReport().getReportContent().toByteArray();
+
+			fos.write(reportBytes);
+			log.info("### File size generated: " + reportBytes.length + "bytes");
+			fos.close();
+
+		} catch (Exception e) { 
 			responseEntity = new ResponseEntity<byte[]>(HttpStatus.NOT_IMPLEMENTED);
 		}
 	}

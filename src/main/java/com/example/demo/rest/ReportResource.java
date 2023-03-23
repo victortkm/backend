@@ -20,8 +20,13 @@ public class ReportResource extends RestBase {
     @Autowired
     ReportService reportService;
     
-	@RequestMapping(value = "/getReport", method = RequestMethod.GET)
-	public void getUserDetails(@RequestParam(value="bizRegNo", required=false) String bizRegNo) {
+	@RequestMapping(value = "/getUserListingReport", method = RequestMethod.GET)
+	public void getUserListingReport(
+			@RequestParam(value="userName", required=false) String userName,
+			@RequestParam(value="firstName", required=false) String firstName,
+			@RequestParam(value="lastName", required=false) String lastName,
+			@RequestParam(value="groupId", required=false) Long groupId
+			) {
 
 		try {
 			
@@ -32,7 +37,7 @@ public class ReportResource extends RestBase {
 			
 			fos = response.getOutputStream();
 			
-			reportService.downloadUserReport(bizRegNo, fos);
+			reportService.downloadUserReport(userName, firstName, lastName, groupId, fos);
 			
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
@@ -40,7 +45,31 @@ public class ReportResource extends RestBase {
 				
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		}
+	}
+    
+	@RequestMapping(value = "/getGroupListingReport", method = RequestMethod.GET)
+	public void getGroupListingReport(
+			@RequestParam(value="groupName", required=false) String groupName
+			) {
+
+		try {
+			
+			String fileName = "user report.pdf";
+			OutputStream fos = null;
+			response.addHeader("Content-Disposition",
+					"attachment;filename=" + new String(fileName.getBytes("UTF-8"), "UTF-8"));
+			
+			fos = response.getOutputStream();
+			
+			reportService.downloadGroupReport(groupName, fos);
+			
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+			response.flushBuffer();
+				
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
