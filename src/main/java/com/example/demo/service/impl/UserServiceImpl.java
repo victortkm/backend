@@ -247,6 +247,9 @@ public class UserServiceImpl implements UserService {
 				
 				HashMap<String,Object> res = new HashMap<String,Object>();
 				res.put("userId", userId);
+				res.put("userName", loginObj.getUserName());
+				res.put("firstName", loginObj.getFirstName());
+				res.put("lastName", loginObj.getLastName());
 				res.put("groupId", groupId);
 				res.put("groupDtlsId", groupDtlsId);
 				

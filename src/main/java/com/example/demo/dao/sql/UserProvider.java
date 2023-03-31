@@ -203,7 +203,7 @@ public class UserProvider {
 	public String login(UserDTO dto) {
 		return new SQL() {
 			{
-				SELECT("u.demo_user_id, d.demo_group_id, g.demo_group_dtls_id");
+				SELECT("u.demo_user_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, g.demo_group_dtls_id");
 				FROM("demo_user u");
 				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
 				LEFT_OUTER_JOIN("demo_group g ON d.demo_group_id = g.demo_group_id");
