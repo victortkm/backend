@@ -117,10 +117,13 @@ public class UserServiceImpl implements UserService {
 		BoUtil boUtil = new BoUtil();
 		
 		try {
+			String pwd = userDAO.getUserDetails(userVo.getUserId()).getPassword();
 			UserDTO dto = UserDTO.buildFromVo(userVo);
+			dto.setPassword(pwd);
 			userDAO.insertUserDtls(dto);
 			userDAO.updateUser(dto);
 			log.info(dto.toString());
+			
 			
 			// init workflow
 			WorkflowVO vo = new WorkflowVO();
@@ -253,7 +256,7 @@ public class UserServiceImpl implements UserService {
 				res.put("groupId", groupId);
 				res.put("groupDtlsId", groupDtlsId);
 				
-				log.info("User ID: " + userId + ", Group ID: " + groupId + ", Group dtls ID: " + groupDtlsId);
+				log.info("User ID: " + userId + ", Group ID: " + groupId + ", Group dtls ID: " + groupDtlsId + " Username "+ loginObj.getUserName());
 				
 				if(groupId != null && groupId != 0l) {
 

@@ -23,7 +23,7 @@ public class UserProvider {
 	public String getUserDetailsFromUserId(Long id) {
 		String s = new SQL() {
 			{
-				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, gd.group_name, u.pending_approval_status,"
+				SELECT("u.demo_user_id, d.demo_user_dtls_id, d.user_name, d.first_name, d.password, d.last_name, d.demo_group_id, gd.group_name, u.pending_approval_status,"
 						+ "u.pending_approval_dtls_id, d.demo_group_id, u.active_flag, DATE_FORMAT(u.created_time, '%Y-%m-%e %H:%i:%s') AS created_time,"
 						+ "DATE_FORMAT(u.updated_time, '%Y-%m-%e %H:%i:%s') AS updated_time");
 				FROM("demo_user u");
@@ -201,7 +201,7 @@ public class UserProvider {
 	}
 	
 	public String login(UserDTO dto) {
-		return new SQL() {
+		String s=  new SQL() {
 			{
 				SELECT("u.demo_user_id, d.user_name, d.first_name, d.last_name, d.demo_group_id, g.demo_group_dtls_id");
 				FROM("demo_user u");
@@ -210,5 +210,7 @@ public class UserProvider {
 				WHERE("user_name = #{userName} AND password = #{password}");
 			}
 		}.toString();
+		log.info(s);
+		return s;
 	}
 }

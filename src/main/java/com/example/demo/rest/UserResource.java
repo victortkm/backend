@@ -123,6 +123,7 @@ public class UserResource {
 		boUtil = demoService.login(userVo);
 		
 		log.info("----- login userVo:"+ userVo);
+		log.info("boUtil res:"+ boUtil.getData());
 		
 		return boUtil;
 	}
