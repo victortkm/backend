@@ -207,7 +207,7 @@ public class UserProvider {
 				FROM("demo_user u");
 				LEFT_OUTER_JOIN("demo_user_dtls d ON u.demo_user_dtls_id = d.demo_user_dtls_id");
 				LEFT_OUTER_JOIN("demo_group g ON d.demo_group_id = g.demo_group_id");
-				WHERE("user_name = #{userName} AND password = #{password}");
+				WHERE("user_name = #{userName} AND password = #{password} AND u.active_flag = 'y'");
 			}
 		}.toString();
 		log.info(s);
